@@ -19,9 +19,9 @@ zad1a: zad1a.c
 
 zad1b: zad1b.c
 	$(CC) $(CFLAGS) zad1b.c -o zad1b.out
-	$(CC) $(CFLAGS) -O1  zad1b.c -o zad1b$O.out
+	$(CC) $(CFLAGS) -O2  zad1b.c -o zad1b$O.out
 	$(CC) $(CFLAGS) zad1b.c -o zad1b$M.out $A
-	$(CC) $(CFLAGS) -O1  zad1b.c -o zad1b$O$M.out $A	
+	$(CC) $(CFLAGS) -O2  zad1b.c -o zad1b$O$M.out $A	
 
 zad1c: zad1c.c
 	$(CC) $(CFLAGS) $(CMATH) -O1 zad1c.c -o zad1c.out
