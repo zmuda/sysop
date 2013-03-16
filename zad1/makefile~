@@ -1,0 +1,75 @@
+CC=gcc
+CFLAGS=-Wall
+CMATH=-lm
+F="%esec\n"
+A=-march=native
+O=_opt
+M=_march
+E=echo
+T=time
+
+all: zad1a zad1b zad1c zad1d test
+
+
+zad1a: zad1a.c
+	$(CC) $(CFLAGS) zad1a.c -o zad1a.out
+	$(CC) $(CFLAGS) -O1  zad1a.c -o zad1a$O.out
+	$(CC) $(CFLAGS) zad1a.c -o zad1a$M.out $A
+	$(CC) $(CFLAGS) -O1  zad1a.c -o zad1a$O$M.out $A
+
+zad1b: zad1b.c
+	$(CC) $(CFLAGS) zad1b.c -o zad1b.out
+	$(CC) $(CFLAGS) -O1  zad1b.c -o zad1b$O.out
+	$(CC) $(CFLAGS) zad1b.c -o zad1b$M.out $A
+	$(CC) $(CFLAGS) -O1  zad1b.c -o zad1b$O$M.out $A	
+
+zad1c: zad1c.c
+	$(CC) $(CFLAGS) $(CMATH) -O1 zad1c.c -o zad1c.out
+	$(CC) $(CFLAGS) $(CMATH) -O1 -ffast-math zad1c.c -o zad1c$O.out
+	$(CC) $(CFLAGS) $(CMATH) -O1 zad1c.c -o zad1c$M.out $A
+	$(CC) $(CFLAGS) $(CMATH) -O1 -ffast-math zad1c.c -o zad1c$O$M.out $A
+
+zad1d: zad1d.c
+	$(CC) $(CFLAGS) -O1 zad1d.c -o zad1d.out
+	$(CC) $(CFLAGS) -O1 -funroll-loops zad1d.c -o zad1d$O.out
+	$(CC) $(CFLAGS) -O1 zad1d.c -o zad1d$M.out $A
+	$(CC) $(CFLAGS) -O1 -funroll-loops zad1d.c -o zad1d$O$M.out $A
+
+test:
+	$E 'zad1a bez optymalizacji'
+	$T -f $F ./zad1a.out
+	$E 'zad1a z optymalizacja O1'
+	time -f $F ./zad1a$O.out
+	echo 'zad1b bez optymalizacji'
+	time -f $F ./zad1b.out
+	echo 'zad1b z optymalizacja O2'
+	time -f $F ./zad1b$O.out
+	echo 'zad1c tylko z flaga O1'
+	time -f $F ./zad1c.out
+	echo 'zad1c z flaga -ffast-math'
+	time -f $F ./zad1c$O.out
+	echo 'zad1d tylko z flaga O1'
+	time -f $F ./zad1d.out
+	echo 'zad1d z flaga -funroll-loops'
+	time -f $F ./zad1d$O.out
+	echo 'POD ARCHITEKTURE '$A	
+	echo 'zad1a bez optymalizacji'
+	time -f $F ./zad1a$M.out
+	echo 'zad1a z optymalizacja O1'
+	time -f $F ./zad1a$O$M.out
+	echo 'zad1b bez optymalizacji'
+	time -f $F ./zad1b$M.out
+	echo 'zad1b z optymalizacja O2'
+	time -f $F ./zad1b$O$M.out
+	echo 'zad1c tylko z flaga O1'
+	time -f $F ./zad1c$M.out
+	echo 'zad1c z flaga -ffast-math'
+	time -f $F ./zad1c$O$M.out
+	echo 'zad1d tylko z flaga O1'
+	time -f $F ./zad1d$M.out
+	echo 'zad1d z flaga -funroll-loops'
+	time -f $F ./zad1d$O$M.out	
+	
+
+clean:
+	rm -rf *.out

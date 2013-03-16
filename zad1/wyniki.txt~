@@ -1,0 +1,52 @@
+			LEGENDA
+
+	bez optymalizacji 	= domyślnie
+	z otymalizacją Ox 	= z opcja -Ox
+	z flaga xxx 		= z opcjami -Ox -fxxx
+	pod architekture	= ponadto z opcja -march=native
+
+			KOMENTARZ
+	
+	optymalizacja pod architekture ma skutek jedynie
+	w zadaniu zad1c
+	gdzie wykorzysujemy zlozone operacje matematyczne
+	(program korzysta z bardziej zaadansowanych instrukcji)
+	w pozostlych operacje sa trywialne i nie wykorzystujemy
+	zadnych zaawansowanych instrukcji
+
+			zad1a 
+bez optymalizacji				1.53sec
+z optymalizacja O1				0.00sec
+(pod architekture) bez optymalizacji		1.98sec
+(pod architekture) z optymalizacja O1		0.00sec
+
+	-> kompilator usuwa zbedny kod
+	
+
+			zad1b 
+bez optymalizacji				2.17sec
+z optymalizacja O1				0.49sec
+(pod architekture) bez optymalizacji		2.17sec
+(pod architekture) z optymalizacja O1		0.49sec
+	
+	-> po dezasemblacji w main jedynie dwa rozkazy - usuniety
+		nieuzywany kod
+	
+
+			zad1c
+bez optymalizacji				3.88sec
+z flaga -ffast-math				0.26sec
+(pod architekture) bez optymalizacji		3.61sec
+(pod architekture) z flaga -ffast-math		0.27sec
+
+	-> fast-math swietnie optymalizuje operacje matematyczne
+		optymalizacja pod architekture dziala!
+
+
+			zad1d
+bez optymalizacji				1.39sec
+z flaga -funroll-loops				0.18sec
+(pod architekture) bez optymalizacji		1.38sec
+(pod architekture) z flaga -funroll-loops	0.18sec
+
+	-> zwijanie petli dziala

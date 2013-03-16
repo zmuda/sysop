@@ -1,0 +1,57 @@
+CC = gcc
+SHELL = /bin/bash
+CFLAGS = -pipe -Wall -W
+VPATH = ./include:./operacje:./we_wy
+
+SRC_CONSOLE = we_konsola.c \
+	wy_konsola.c
+
+SRC_FILE = we_plik.c \
+        wy_plik.c
+
+SRC_FUNCTIONS = dodaj.c \
+	odejmij.c \
+	iloczyn.c
+
+HEADERS = dodaj.h \
+	odejmij.h \
+	iloczyn.h \
+	we.h \
+	wy.h \
+	log.h
+
+OBJ_CONSOLE = $(SRC_CONSOLE:.c=.o)
+
+OBJ_FILE = $(SRC_FILE:.c=.o)
+
+FUNCTIONS = $(SRC_FUNCTIONS:.c=.o)
+
+cons: $(OBJ_CONSOLE) $(FUNCTIONS) macierze.o
+	$(CC) -c -D KONSOLA macierze.c
+	$(CC) -o macierz -D KONSOLA $^
+
+file: $(OBJ_FILE) $(FUNCTIONS) macierze.o
+	$(CC) -c macierze.c
+	$(CC) -o macierz $^
+
+cons_logs: $(OBJ_CONSOLE) $(FUNCTIONS) macierze.o
+	$(CC) -c -D LOG -D KONSOLA macierze.c
+	$(CC) -o macierz -D LOG -D KONSOLA $^
+
+file_logs: $(OBJ_FILE) $(FUNCTIONS) macierze.o
+	$(CC) -c -D LOG macierze.c
+	$(CC) -o macierz -D LOG $^
+
+$(OBJ_CONSOLE): $(SRC_CONSOLE) $(HEADERS)
+	$(CC) -c $(CFLAGS) $^
+
+$(OBJ_FILE): $(SRC_FILE) $(HEADERS)
+	$(CC) -c $(CFLAGS) $^
+
+$(FUNCTIONS): $(SRC_FUNCTIONS) $(HEADERS)
+	$(CC) -c $(CFLAGS) $^
+
+clean: 
+	rm -f *.o
+	rm -f macierz
+	rm -f ./include/*.gch
