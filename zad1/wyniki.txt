@@ -25,9 +25,9 @@ z optymalizacja O1				0.00sec
 
 			zad1b 
 bez optymalizacji				2.17sec
-z optymalizacja O1				0.49sec
+z optymalizacja O2				0.00sec
 (pod architekture) bez optymalizacji		2.17sec
-(pod architekture) z optymalizacja O1		0.49sec
+(pod architekture) z optymalizacja O2		0.00sec
 	
 	-> po dezasemblacji w main jedynie dwa rozkazy - usuniety
 		nieuzywany kod
