@@ -1,0 +1,15 @@
+Aby skompilowac i uruchomic program nalezy wydac polecenia
+
+	./configure <parametry>
+	make
+	./src/macierze <parametry>
+
+
+Dostepne parametry "configure" (opis rowniez po ./configure --help)
+
+	--enable-fileoutput
+		wybranie plikow wejscia/wyjscia (zamiast konsoli)  
+	--enable-logs
+		wlacza logowanie
+
+

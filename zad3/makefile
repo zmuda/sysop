@@ -24,43 +24,43 @@ O_RESZTA=$(ZR_RESZTA:.c=.o)
 HEAD = src/include/suma.h src/include/roznica.h src/include/iloczyn.h src/include/wypisz.h src/include/wczytaj.h src/include/macierz.h
 
 konsola : $(O_KONS) $(O_RESZTA) main_k.o 
-	$(CC) $^ -o $(PROJECT)
+	$(CC) $^ -o $(PROJECT) $(INC)
 
 plik : $(O_PLIK) $(O_RESZTA) main_p.o
-	$(CC) $^ -o $(PROJECT)
+	$(CC) $^ -o $(PROJECT) $(INC)
 
-iloczyn.o : src/operacje/iloczyn.c src/include/iloczyn.h src/include/macierz.h
-	$(CC) -c $< -o $@ 
+iloczyn.o : src/operacje/iloczyn.c iloczyn.h macierz.h
+	$(CC) -c $< -o $@ $(INC)
 
-suma.o : src/operacje/suma.c src/include/suma.h src/include/macierz.h
-	$(CC) -c $< -o $@
+suma.o : src/operacje/suma.c suma.h macierz.h
+	$(CC) -c $< -o $@ $(INC)
 
-roznica.o : src/operacje/roznica.c src/include/roznica.h src/include/macierz.h
-	$(CC) -c $< -o $@
+roznica.o : src/operacje/roznica.c roznica.h macierz.h
+	$(CC) -c $< -o $@ $(INC)
 
-pliki.o : src/we_wy/pliki.c src/include/pliki.h
-	$(CC) -c $< -o $@
+pliki.o : src/we_wy/pliki.c pliki.h
+	$(CC) -c $< -o $@ $(INC)
 
-wczytaj_konsola.o : src/we_wy/wczytaj_konsola.c src/include/wczytaj.h src/include/macierz.h
-	$(CC) -c $< -o $@
+wczytaj_konsola.o : src/we_wy/wczytaj_konsola.c wczytaj.h macierz.h
+	$(CC) -c $< -o $@ $(INC)
 
-wczytaj_plik.o : src/we_wy/wczytaj_plik.c src/include/wczytaj.h src/include/macierz.h src/include/pliki.h
-	$(CC) -c $< -o $@
+wczytaj_plik.o : src/we_wy/wczytaj_plik.c wczytaj.h macierz.h pliki.h
+	$(CC) -c $< -o $@ $(INC)
 
-wypisz_konsola.o : src/we_wy/wypisz_konsola.c src/include/wczytaj.h src/include/macierz.h
-	$(CC) -c $< -o $@
+wypisz_konsola.o : src/we_wy/wypisz_konsola.c wczytaj.h macierz.h
+	$(CC) -c $< -o $@ $(INC)
 
-wypisz_plik.o : src/we_wy/wypisz_plik.c src/include/wczytaj.h src/include/macierz.h src/include/pliki.h
-	$(CC) -c $< -o $@
+wypisz_plik.o : src/we_wy/wypisz_plik.c wczytaj.h macierz.h pliki.h
+	$(CC) -c $< -o $@ $(INC)
 
 main_k.o : src/main.c $(HEAD)
 	$(CC) -c $< -o $@ 
 
-main_p.o : src/main.c $(HEAD) src/include/pliki.h
-	$(CC) -D WEWY_PLIKI -c $< -o $@
+main_p.o : src/main.c $(HEAD) pliki.h
+	$(CC) -D WEWY_PLIKI -c $< -o $@ $(INC)
 
-macierz.o : src/reszta/macierz.c src/include/macierz.h
-	$(CC) -c $< -o $@ 
+macierz.o : src/reszta/macierz.c macierz.h
+	$(CC) -c $< -o $@ $(INC)
 
 clean :
 	rm -f *.o
