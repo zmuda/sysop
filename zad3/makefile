@@ -13,51 +13,20 @@ COMS =
 		COMS = -D KOMUNIKATY
 	endif
 
-ZR_KONS = wczytaj_konsola.c wypisz_konsola.c
-ZR_PLIK = wczytaj_plik.c wypisz_plik.c pliki.c
-ZR_RESZTA = suma.c roznica.c iloczyn.c macierz.c
+KONS = wczytaj_konsola.o wypisz_konsola.o
+PLIK = wczytaj_plik.o wypisz_plik.o pliki.o
+RESZTA = suma.o roznica.o iloczyn.o macierz.o
 
-O_KONS=$(ZR_KONS:.c=.o)
-O_PLIK=$(ZR_PLIK:.c=.o)
-O_RESZTA=$(ZR_RESZTA:.c=.o)
-
-konsola : $(O_KONS) $(O_RESZTA) main_k.o 
+konsola : $(KONS) $(RESZTA) main.o 
 	$(CC) $^ -o $(PROJECT)
 
-plik : $(O_PLIK) $(O_RESZTA) main_p.o
+plik : $(PLIK) $(RESZTA) main_p.o
 	$(CC) $^ -o $(PROJECT)
 
-iloczyn.o : iloczyn.c iloczyn.h macierz.h
-	$(CC) -c $< -o $@
-
-suma.o : suma.c suma.h macierz.h
-	$(CC) -c $< -o $@
-
-roznica.o : roznica.c roznica.h macierz.h
-	$(CC) -c $< -o $@
-
-pliki.o : pliki.c pliki.h
-	$(CC) -c $< -o $@
-
-wczytaj_konsola.o : wczytaj_konsola.c wczytaj.h macierz.h
-	$(CC) -c $< -o $@
-
-wczytaj_plik.o : wczytaj_plik.c wczytaj.h macierz.h pliki.h
-	$(CC) -c $< -o $@
-
-wypisz_konsola.o : wypisz_konsola.c wczytaj.h macierz.h
-	$(CC) -c $< -o $@
-
-wypisz_plik.o : wypisz_plik.c wczytaj.h macierz.h pliki.h
-	$(CC) -c $< -o $@
-
-main_k.o : main.c
-	$(CC) -c $< -o $@
-
-main_p.o : main.c pliki.h
+main_p.o : main.c
 	$(CC) -D WEWY_PLIKI -c $< -o $@
 
-macierz.o : reszta/macierz.c macierz.h
+%.o: %.c
 	$(CC) -c $< -o $@
 
 clean :
