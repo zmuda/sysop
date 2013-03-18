@@ -1,6 +1,8 @@
 #dodatkowy argument nazywa sie LOGS;
 #make LOGS=yes
 #(tak uaktywnic logowanie na konsole)
+#make plik
+#(we-wy z plikow)
 
 VPATH=src/include:src/operacje:src/we_wy:src/reszta:src/
 

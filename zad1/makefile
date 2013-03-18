@@ -12,35 +12,35 @@ all: zad1a zad1b zad1c zad1d test
 
 
 zad1a: zad1a.c
-	$(CC) $(CFLAGS) zad1a.c -o zad1a.out
-	$(CC) $(CFLAGS) -O1  zad1a.c -o zad1a$O.out
-	$(CC) $(CFLAGS) zad1a.c -o zad1a$M.out $A
-	$(CC) $(CFLAGS) -O1  zad1a.c -o zad1a$O$M.out $A
+	$(CC) $(CFLAGS) $@.c -o $@.out
+	$(CC) $(CFLAGS) -O1  $@.c -o $@$O.out
+	$(CC) $(CFLAGS) $@.c -o $@$M.out $A
+	$(CC) $(CFLAGS) -O1  $@.c -o $@$O$M.out $A
 
 zad1b: zad1b.c
-	$(CC) $(CFLAGS) zad1b.c -o zad1b.out
-	$(CC) $(CFLAGS) -O2  zad1b.c -o zad1b$O.out
-	$(CC) $(CFLAGS) zad1b.c -o zad1b$M.out $A
-	$(CC) $(CFLAGS) -O2  zad1b.c -o zad1b$O$M.out $A	
+	$(CC) $(CFLAGS) -O1 $@.c -o $@.out
+	$(CC) $(CFLAGS) -O2  $@.c -o $@$O.out
+	$(CC) $(CFLAGS) -O1 $@.c -o $@$M.out $A
+	$(CC) $(CFLAGS) -O2  $@.c -o $@$O$M.out $A	
 
 zad1c: zad1c.c
-	$(CC) $(CFLAGS) $(CMATH) -O1 zad1c.c -o zad1c.out
-	$(CC) $(CFLAGS) $(CMATH) -O1 -ffast-math zad1c.c -o zad1c$O.out
-	$(CC) $(CFLAGS) $(CMATH) -O1 zad1c.c -o zad1c$M.out $A
-	$(CC) $(CFLAGS) $(CMATH) -O1 -ffast-math zad1c.c -o zad1c$O$M.out $A
+	$(CC) $(CFLAGS) $(CMATH) -O1 $@.c -o $@.out
+	$(CC) $(CFLAGS) $(CMATH) -O1 -ffast-math $@.c -o $@$O.out
+	$(CC) $(CFLAGS) $(CMATH) -O1 $@.c -o $@$M.out $A
+	$(CC) $(CFLAGS) $(CMATH) -O1 -ffast-math $@.c -o $@$O$M.out $A
 
 zad1d: zad1d.c
-	$(CC) $(CFLAGS) -O1 zad1d.c -o zad1d.out
-	$(CC) $(CFLAGS) -O1 -funroll-loops zad1d.c -o zad1d$O.out
-	$(CC) $(CFLAGS) -O1 zad1d.c -o zad1d$M.out $A
-	$(CC) $(CFLAGS) -O1 -funroll-loops zad1d.c -o zad1d$O$M.out $A
+	$(CC) $(CFLAGS) -O1 $@.c -o $@.out
+	$(CC) $(CFLAGS) -O1 -funroll-loops $@.c -o $@$O.out
+	$(CC) $(CFLAGS) -O1 $@.c -o $@$M.out $A
+	$(CC) $(CFLAGS) -O1 -funroll-loops $@.c -o $@$O$M.out $A
 
 test:
 	$E 'zad1a bez optymalizacji'
 	$T -f $F ./zad1a.out
 	$E 'zad1a z optymalizacja O1'
 	$T -f $F ./zad1a$O.out
-	$E 'zad1b bez optymalizacji'
+	$E 'zad1b z optymalizacja O1'
 	$T -f $F ./zad1b.out
 	$E 'zad1b z optymalizacja O2'
 	$T -f $F ./zad1b$O.out
@@ -57,7 +57,7 @@ test:
 	$T -f $F ./zad1a$M.out
 	$E 'zad1a z optymalizacja O1'
 	$T -f $F ./zad1a$O$M.out
-	$E 'zad1b bez optymalizacji'
+	$E 'zad1b z optymalizacja O1'
 	$T -f $F ./zad1b$M.out
 	$E 'zad1b z optymalizacja O2'
 	$T -f $F ./zad1b$O$M.out
