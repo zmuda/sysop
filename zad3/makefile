@@ -1,3 +1,7 @@
+#dodatkowy argument nazywa sie LOGS;
+#make LOGS=yes
+#(tak uaktywnic logowanie na konsole)
+
 VPATH=src/include:src/operacje:src/we_wy:src/reszta
 
 CC = gcc $(FLAG) $(INC) $(COMS)
