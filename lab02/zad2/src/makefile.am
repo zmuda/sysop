@@ -1,0 +1,3 @@
+noinst_LIBRARIES=libmatrix.a
+libmatrix_a_SOURCES=libmatrix.c
+libmatrix_a_CFLAGS=-Wall -I.
