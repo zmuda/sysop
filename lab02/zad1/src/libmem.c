@@ -198,9 +198,24 @@ unsigned listLen(Lista* tmp) {
     }
     return ret;
 }
+Diagnostics* diags = 0;
+Diagnostics* diagnose(){
+    if(diags==0)diags = allocation(sizeof(Diagnostics));
+    diags->freeListLen=listLen(freeList);
+    diags->occupiedListLen=listLen(occupiedList);
+    diags->biggestFree=biggestPredecesor(0)->next->blocksNum*BLOCK_SIZE;
+    diags->smallestFree=smallestPredecessor(0)->next->blocksNum*BLOCK_SIZE;
+    return diags;
+};
+
 void printDiagnostics() {
-    printf("\n\nDlugosc listy wolnych obszarow: %u",listLen(freeList));
-    printf("\nDlugosc listy zajetych obszarow: %u",listLen(occupiedList));
-    printf("\nNajwiekszy wolny: %uB",biggestPredecesor(0)->next->blocksNum*BLOCK_SIZE);
-    printf("\nNajmniejszy wolny: %uB\n",smallestPredecessor(0)->next->blocksNum*BLOCK_SIZE);
+    diagnose();
+    printf("\n\nDlugosc listy wolnych obszarow: %u",diags->freeListLen);
+    printf("\nDlugosc listy zajetych obszarow: %u",diags->occupiedListLen);
+    printf("\nNajwiekszy wolny: %uB",diags->biggestFree);
+    printf("\nNajmniejszy wolny: %uB\n",diags->biggestFree);
+}
+
+void fianlizeMemory(){
+    free(mem);
 }

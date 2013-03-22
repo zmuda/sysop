@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "libmatrix.h"
+#include "src/libmatrix.h"
+#include "lib/libmem.h"
 
 int main(int argc, char **argv)
 {
@@ -14,10 +15,9 @@ int main(int argc, char **argv)
 
     printMatrix(mul(a,b));
 
-
-    printFree();
-    printOccupied();
     printDiagnostics();
+    Diagnostics* d = diagnose();
+    printf("<%u>",d->smallestFree);
 
     return 0;
 }

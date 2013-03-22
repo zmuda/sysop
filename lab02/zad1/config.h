@@ -5,7 +5,7 @@
 /* #undef BIG_STRATEGY */
 
 /* Defines block size in bytes. */
-#define BLOCK_SIZE 5
+#define BLOCK_SIZE 6
 
 /* Okresl sposob allokacji */
 #define FIRST_STRATEGY /**/
