@@ -1,8 +1,0 @@
-
-
-lib_LTLIBRARIES=libmatrix.la
-libmatrix_la_CFLAGS=-Wall -I.
-libmatrix_la_SOURCES=libmatrix.c
-
-
-

@@ -1,7 +1,0 @@
-SUBDIRS=src
-
-bin_PROGRAMS=testy
-
-testy_SOURCES=test.c
-testy_CFLAGS=-Wall -I ./src 
-testy_LDADD=./src/libmem.a

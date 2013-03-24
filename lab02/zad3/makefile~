@@ -1,0 +1,39 @@
+CC=gcc
+CFLAGS=-Wall
+CDL=-ldl
+#LMEM=-L lib/mem/src/ -lmem
+LMEM=lib/mem/src/libmem.a
+SMEM=lib/mem/src/.libs/libmem.so
+LMAT=-L lib/matrix/src/ -lmatrix
+SMAT=lib/matrix/src/.libs/libmatrix.so
+
+static: static1 static2
+
+shared: shared1 shared2
+
+user: user1 user2
+
+static1: src/testmem.c
+	$(CC) $^ -o $@.out $(CDL) $(LMEM) 
+
+
+shared1: src/testmem.c
+	$(CC) $^ -o $@.out $(CDL) $(SMEM) 
+
+user1: src/testmem.c
+	$(CC) $^ -o $@.out $(CDL) -D DYNAMIC 
+
+
+static2: src/testmatrix.c
+	$(CC) $^ -o $@.out $(CDL) $(LMAT) $(LMEM)
+
+
+shared2: src/testmatrix.c
+	$(CC) $^ -o $@.out $(CDL) $(SMAT) $(SMEM)
+
+user2: src/testmatrix.c
+	$(CC) $^ -o $@.out $(CDL) -D DYNAMIC $(LMEM)
+
+clean:
+	rm -rf *.out
+

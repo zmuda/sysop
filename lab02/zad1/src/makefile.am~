@@ -1,4 +1,0 @@
-lib_LTLIBRARIES=libmem.la
-libmem_la_CFLAGS=-Wall -I.
-libmem_la_SOURCES=libmem.c
-
