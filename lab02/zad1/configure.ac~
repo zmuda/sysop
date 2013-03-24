@@ -41,7 +41,7 @@ AC_ARG_WITH(
 
 AC_ARG_WITH(
 	block-size, 
-	AC_HELP_STRING([--enable-block-size], [Ustaw zadany rozmiar bloku w bajtach]), 
+	AC_HELP_STRING([--enable-block-size], [Set choosen block size in bytes]), 
 	[ if test "x$with_block_size" = "" ; then
          AC_MSG_RESULT([No])
          AC_DEFINE_UNQUOTED([BLOCK_SIZE], [1], [Defines block size in bytes.])

@@ -6,5 +6,3 @@ Opcje do ./configure
 --enable-block-size
 	[Ustaw zadany rozmiar bloku w bajtach]
 
-
-Bibliotek szukaj w src/.libs/
