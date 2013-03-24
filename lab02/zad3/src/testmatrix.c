@@ -3,32 +3,12 @@
 #include<sys/times.h>
 #include<time.h>
 #include<unistd.h>
-#include "../lib/matrix/src/libmatrix.h"
-#include "../lib/mem/src/libmem.h"
+#include "../lib/libmatrix.h"
+#include "../lib/libmem.h"
 MemoryManager* man;
 
-
-#define DYNAMIC 0
 #ifdef DYNAMIC
 #include<dlfcn.h>
-/*
-#define diagnose (*diagnosRuntime)
-#define fianlizeMemory (*finalizeMemorRuntime)
-#define diagnose (*diagnosRuntime)
-#define deallocation (*deallocatioRuntime)
-#define allocation (*allocatioRuntime)
-#define init (*iniRuntime)
-    typedef MemoryManager* (*type1)(unsigned long long,MemoryManager*);
-    type1 iniRuntime;
-    typedef void (*type2)(void*,MemoryManager*);
-    type2 deallocatioRuntime;
-    typedef void* (*type3)(unsigned long long,MemoryManager*);
-    type3 allocatioRuntime;
-    typedef Diagnostics* (*type4)(MemoryManager*);
-    type4 diagnosRuntime ;
-    typedef void (*type0)(MemoryManager*);
-    type0 finalizeMemorRuntime;
-*/
 #define zeros zeroRuntime
 #define inputs inputRuntime
 #define add adRuntime
@@ -74,7 +54,7 @@ void checkpoint(){
         firstReal=nowReal;
         firstTime=now;
     } else {
-    //printDiagnostics();
+    printDiagnostics();
     printf("\n\tOd pierwszego:\t\tR %.2f\tS %.2f\tU %.2f",
            ((double)(nowReal-firstReal))/CLOCKS_PER_SEC,
            ((double)(now.tms_stime-firstTime.tms_stime))/CLK,
@@ -102,15 +82,7 @@ int main(int argc, char **argv)
 {
 
 #ifdef DYNAMIC
-/*
-    void* libka = dlopen("lib/mem/src/.libs/libmem.so", RTLD_LAZY);
-    iniRuntime = (type1)dlsym(libka,"init");
-    deallocatioRuntime = (type2)dlsym(libka,"deallocation");
-    allocatioRuntime = (type3)dlsym(libka,"allocation");
-    diagnosRuntime = (type4)dlsym(libka,"diagnose");
-    finalizeMemorRuntime = (type0)dlsym(libka,"fianlizeMemory");
-*/
-    void* libka0 = dlopen("lib/matrix/src/.libs/libmatrix.so", RTLD_LAZY);
+    void* libka0 = dlopen("lib/libmatrix.so", RTLD_LAZY);
     if(!libka0)printf("\n%s\n", dlerror());
     typeA zeroRuntime=(typeA)dlsym(libka0,"zeros");
     if(!zeroRuntime)printf("\n%s\n", dlerror());
@@ -127,10 +99,8 @@ int main(int argc, char **argv)
     man->diags=malloc(sizeof(Diagnostics));
     printf("Rozpoczecie wykonania");
     checkpoint();
-    //printf("<<<%i>>>",diagnose(man)->biggestFree);
 
-    init(SIZE*SIZE*TIMES*3*sizeof(double),man);
-    //init(341000,man);
+    init(SIZE*SIZE*3*sizeof(double),man);
     printf("Zaalokowano bufor na %i bloków",SIZE*SIZE*TIMES*3*sizeof(double));
     checkpoint();
 
@@ -152,7 +122,6 @@ int main(int argc, char **argv)
     for(i=0;i<TIMES;i++){
         tmp=a;
         a=mul(a,b,man);
-        //a=createWithoutFilling(10,10,man);
         dispose(tmp,man);
     }
     printf("Pomnozono a*b %d razy",TIMES);

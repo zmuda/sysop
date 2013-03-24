@@ -1,8 +1,0 @@
-SUBDIRS=src
-
-bin_PROGRAMS=testy
-
-testy_SOURCES=mult.c
-testy_CFLAGS=-Wall -I ./src 
-testy_LDADD=./src/libmatrix.a ./lib/libmem.a
-

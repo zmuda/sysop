@@ -4,8 +4,8 @@
 #include<time.h>
 #include<unistd.h>
 
-#include "../lib/matrix/src/libmatrix.h"
-#include "../lib/mem/src/libmem.h"
+#include "../lib/libmatrix.h"
+#include "../lib/libmem.h"
 
 //#define DYNAMIC 0
 #ifdef DYNAMIC
@@ -78,7 +78,7 @@ int main(int argc, char **argv)
 {
 
 #ifdef DYNAMIC
-    void* libka = dlopen("lib/mem/src/.libs/libmem.so", RTLD_LAZY);
+    void* libka = dlopen("lib/libmem.so", RTLD_LAZY);
     iniRuntime = (type1)dlsym(libka,"init");
     deallocatioRuntime = (type2)dlsym(libka,"deallocation");
     allocatioRuntime = (type3)dlsym(libka,"allocation");
