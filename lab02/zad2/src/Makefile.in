@@ -14,7 +14,6 @@
 
 @SET_MAKE@
 
-
 VPATH = @srcdir@
 am__make_dryrun = \
   { \
@@ -62,12 +61,6 @@ mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
-LIBRARIES = $(noinst_LIBRARIES)
-ARFLAGS = cru
-libmatrix_a_AR = $(AR) $(ARFLAGS)
-libmatrix_a_LIBADD =
-am_libmatrix_a_OBJECTS = libmatrix_a-libmatrix.$(OBJEXT)
-libmatrix_a_OBJECTS = $(am_libmatrix_a_OBJECTS)
 am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
 am__vpath_adj = case $$p in \
     $(srcdir)/*) f=`echo "$$p" | sed "s|^$$srcdirstrip/||"`;; \
@@ -116,8 +109,8 @@ CCLD = $(CC)
 LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
-SOURCES = $(libmatrix_a_SOURCES) $(libmatrix_la_SOURCES)
-DIST_SOURCES = $(libmatrix_a_SOURCES) $(libmatrix_la_SOURCES)
+SOURCES = $(libmatrix_la_SOURCES)
+DIST_SOURCES = $(libmatrix_la_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -239,9 +232,6 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-noinst_LIBRARIES = libmatrix.a
-libmatrix_a_SOURCES = libmatrix.c
-libmatrix_a_CFLAGS = -Wall -I.
 lib_LTLIBRARIES = libmatrix.la
 libmatrix_la_SOURCES = libmatrix.c
 libmatrix_la_LDFLAGS = -module
@@ -279,13 +269,6 @@ $(top_srcdir)/configure:  $(am__configure_deps)
 $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 $(am__aclocal_m4_deps):
-
-clean-noinstLIBRARIES:
-	-test -z "$(noinst_LIBRARIES)" || rm -f $(noinst_LIBRARIES)
-libmatrix.a: $(libmatrix_a_OBJECTS) $(libmatrix_a_DEPENDENCIES) $(EXTRA_libmatrix_a_DEPENDENCIES) 
-	-rm -f libmatrix.a
-	$(libmatrix_a_AR) libmatrix.a $(libmatrix_a_OBJECTS) $(libmatrix_a_LIBADD)
-	$(RANLIB) libmatrix.a
 install-libLTLIBRARIES: $(lib_LTLIBRARIES)
 	@$(NORMAL_INSTALL)
 	@list='$(lib_LTLIBRARIES)'; test -n "$(libdir)" || list=; \
@@ -330,7 +313,6 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmatrix.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmatrix_a-libmatrix.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -352,20 +334,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ $<
-
-libmatrix_a-libmatrix.o: libmatrix.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmatrix_a_CFLAGS) $(CFLAGS) -MT libmatrix_a-libmatrix.o -MD -MP -MF $(DEPDIR)/libmatrix_a-libmatrix.Tpo -c -o libmatrix_a-libmatrix.o `test -f 'libmatrix.c' || echo '$(srcdir)/'`libmatrix.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libmatrix_a-libmatrix.Tpo $(DEPDIR)/libmatrix_a-libmatrix.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='libmatrix.c' object='libmatrix_a-libmatrix.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmatrix_a_CFLAGS) $(CFLAGS) -c -o libmatrix_a-libmatrix.o `test -f 'libmatrix.c' || echo '$(srcdir)/'`libmatrix.c
-
-libmatrix_a-libmatrix.obj: libmatrix.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmatrix_a_CFLAGS) $(CFLAGS) -MT libmatrix_a-libmatrix.obj -MD -MP -MF $(DEPDIR)/libmatrix_a-libmatrix.Tpo -c -o libmatrix_a-libmatrix.obj `if test -f 'libmatrix.c'; then $(CYGPATH_W) 'libmatrix.c'; else $(CYGPATH_W) '$(srcdir)/libmatrix.c'; fi`
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libmatrix_a-libmatrix.Tpo $(DEPDIR)/libmatrix_a-libmatrix.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='libmatrix.c' object='libmatrix_a-libmatrix.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmatrix_a_CFLAGS) $(CFLAGS) -c -o libmatrix_a-libmatrix.obj `if test -f 'libmatrix.c'; then $(CYGPATH_W) 'libmatrix.c'; else $(CYGPATH_W) '$(srcdir)/libmatrix.c'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo
@@ -471,7 +439,7 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-am
-all-am: Makefile $(LIBRARIES) $(LTLIBRARIES)
+all-am: Makefile $(LTLIBRARIES)
 installdirs:
 	for dir in "$(DESTDIR)$(libdir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
@@ -509,7 +477,7 @@ maintainer-clean-generic:
 clean: clean-am
 
 clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
-	clean-noinstLIBRARIES mostlyclean-am
+	mostlyclean-am
 
 distclean: distclean-am
 	-rm -rf ./$(DEPDIR)
@@ -580,15 +548,15 @@ uninstall-am: uninstall-libLTLIBRARIES
 .MAKE: install-am install-strip
 
 .PHONY: CTAGS GTAGS all all-am check check-am clean clean-generic \
-	clean-libLTLIBRARIES clean-libtool clean-noinstLIBRARIES \
-	cscopelist ctags distclean distclean-compile distclean-generic \
-	distclean-libtool distclean-tags distdir dvi dvi-am html \
-	html-am info info-am install install-am install-data \
-	install-data-am install-dvi install-dvi-am install-exec \
-	install-exec-am install-html install-html-am install-info \
-	install-info-am install-libLTLIBRARIES install-man install-pdf \
-	install-pdf-am install-ps install-ps-am install-strip \
-	installcheck installcheck-am installdirs maintainer-clean \
+	clean-libLTLIBRARIES clean-libtool cscopelist ctags distclean \
+	distclean-compile distclean-generic distclean-libtool \
+	distclean-tags distdir dvi dvi-am html html-am info info-am \
+	install install-am install-data install-data-am install-dvi \
+	install-dvi-am install-exec install-exec-am install-html \
+	install-html-am install-info install-info-am \
+	install-libLTLIBRARIES install-man install-pdf install-pdf-am \
+	install-ps install-ps-am install-strip installcheck \
+	installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-compile \
 	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
 	tags uninstall uninstall-am uninstall-libLTLIBRARIES

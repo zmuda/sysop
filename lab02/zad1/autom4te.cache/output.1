@@ -1405,7 +1405,7 @@ Optional Packages:
   --with-allocator        Okresl sposob alokacji; small = w najmniejszym
                           wolnym obszarze; big = w najwiekszym; first = w
                           pierwszym na liscie(default)
-  --enable-block-size     Set choosen block size in bytes
+  --enable-block-size     Ustaw zadany rozmiar bloku w bajtach
 
 Some influential environment variables:
   CC          C compiler command
@@ -11716,7 +11716,7 @@ $as_echo "No" >&6; }
 fi
 
 
-ac_config_files="$ac_config_files Makefile src/Makefile src/makefile"
+ac_config_files="$ac_config_files Makefile src/Makefile"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -12725,7 +12725,6 @@ do
     "libtool") CONFIG_COMMANDS="$CONFIG_COMMANDS libtool" ;;
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
     "src/Makefile") CONFIG_FILES="$CONFIG_FILES src/Makefile" ;;
-    "src/makefile") CONFIG_FILES="$CONFIG_FILES src/makefile" ;;
 
   *) as_fn_error $? "invalid argument: \`$ac_config_target'" "$LINENO" 5;;
   esac

@@ -54,6 +54,5 @@ AC_ARG_WITH(
 )
 
 AC_CONFIG_FILES([Makefile
-                 src/Makefile
-		 src/makefile])
+                 src/Makefile])
 AC_OUTPUT

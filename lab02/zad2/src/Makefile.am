@@ -1,7 +1,3 @@
-noinst_LIBRARIES=libmatrix.a
-libmatrix_a_SOURCES=libmatrix.c
-libmatrix_a_CFLAGS=-Wall -I.
-
 lib_LTLIBRARIES=libmatrix.la
 libmatrix_la_SOURCES=libmatrix.c
 libmatrix_la_LDFLAGS=-module

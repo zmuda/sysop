@@ -2,6 +2,4 @@ lib_LTLIBRARIES=libmem.la
 libmem_la_SOURCES=libmem.c
 libmem_la_LDFLAGS= -module
 
-#noinst_LIBRARIES=libmem.a
-#libmem_a_SOURCES=libmem.c
 

@@ -1,0 +1,4 @@
+zbuduj zad1 i zad2 przed uruchomieniem zad3
+przed korzystaniem z wyników kompilacji zad3 nie zapomnij ustawić:
+	LD_LIBRARY_PATH=/home/klosz/agh/sysop/lab02/zad3/lib/ 
+	export LD_LIBRARY_PATH
