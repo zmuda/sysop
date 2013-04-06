@@ -15,16 +15,13 @@ void pokazStrukture(struktura* s, int rozmiar){
 }
 
 void sortuj(char* plikNazwa){
-    printf("\nsortuj\n");
-
-    int size, count;
-	#ifndef SYS
+    int rozmiar, ilosc;
+	#ifndef FHANDLE
 	FILE * fp = fopen(plikNazwa, "r+b");
 	#else
 	int fp = open(plikNazwa, O_RDWR);
 	#endif
-
-	#ifndef SYS
+	#ifndef FHANDLE
 	if(fp == NULL)
 	#else
 	if(fp == -1)
@@ -33,66 +30,67 @@ void sortuj(char* plikNazwa){
 		printf("Nie znaleziono pliku!\n");
 		exit(89);
 	}
-
-	#ifndef SYS
-	fread(&size, sizeof(int), 1, fp);
-	fread(&count, sizeof(int), 1, fp);
+	#ifndef FHANDLE
+	fread(&rozmiar, sizeof(int), 1, fp);
+	fread(&ilosc, sizeof(int), 1, fp);
 	#else
-	read(fp, &size, sizeof(int));
-	read(fp, &count, sizeof(int));
+	read(fp, &rozmiar, sizeof(int));
+	read(fp, &ilosc, sizeof(int));
 	#endif
-
-	printf("Rozmiar struktury: %d\tLiczebnosc struktury: %d\n", size, count);
-
+	printf("Rozmiar sortowanej struktury: %d\tLiczebnosc struktur: %d\n", rozmiar, ilosc);
     struktura *a,*b;
     a=(struktura*)malloc(sizeof(struktura));
     b=(struktura*)malloc(sizeof(struktura));
-    a->dane=(byte*)malloc(sizeof(byte)*size);
-    b->dane=(byte*)malloc(sizeof(byte)*size);
+    a->dane=(byte*)malloc(sizeof(byte)*rozmiar);
+    b->dane=(byte*)malloc(sizeof(byte)*rozmiar);
     int i,posortowane = 0;
     while(!posortowane){
         posortowane=1;
-        for(i=0;i<count-1;i++){
-            #ifndef SYS
-			fseek(fp, 2*sizeof(int) + i * (sizeof(int) + sizeof(char)*size), SEEK_SET);
+        for(i=0;i<ilosc-1;i++){
+            #ifndef FHANDLE
+			fseek(fp, 2*sizeof(int) + i * (sizeof(int) + sizeof(byte)*rozmiar), SEEK_SET);
 			fread(a, 1, sizeof(int), fp);
-			fread(a->dane, 1, sizeof(byte)*size, fp);
+			fread(a->dane, 1, sizeof(byte)*rozmiar, fp);
 			fread(b, 1, sizeof(int), fp);
-			fread(b->dane, 1, sizeof(byte)*size, fp);
+			fread(b->dane, 1, sizeof(byte)*rozmiar, fp);
 			#else
-			lseek(fp, 2*sizeof(int) + i * (sizeof(int) + sizeof(char)*size), SEEK_SET);
+			lseek(fp, 2*sizeof(int) + i * (sizeof(int) + sizeof(byte)*rozmiar), SEEK_SET);
 			read(fp, a, sizeof(int));
-            read(fp,a->dane,sizeof(char)*size);
+            read(fp,a->dane,sizeof(byte)*rozmiar);
 			read(fp, b, sizeof(int));
-            read(fp,b->dane,sizeof(char)*size);
+            read(fp,b->dane,sizeof(byte)*rozmiar);
 			#endif
+			#ifdef VERBOSE
 			printf("\n\t<%i> vs <%i>",a->klucz,b->klucz);
-			pokazStrukture(a,size);
-			pokazStrukture(b,size);
+			pokazStrukture(a,rozmiar);
+			pokazStrukture(b,rozmiar);
+            #endif
 			if(a->klucz>b->klucz){
-                #ifndef SYS
-                fseek(fp, 2*sizeof(int) + i * (sizeof(int) + sizeof(char)*size), SEEK_SET);
+                #ifndef FHANDLE
+                fseek(fp, 2*sizeof(int) + i * (sizeof(int) + sizeof(byte)*rozmiar), SEEK_SET);
                 fwrite(b, sizeof(int),1,fp);
-                fwrite(b->dane, sizeof(byte)*size, 1, fp);
+                fwrite(b->dane, sizeof(byte)*rozmiar, 1, fp);
                 fwrite(a, sizeof(int),1,fp);
-                fwrite(a->dane, sizeof(byte)*size, 1, fp);
+                fwrite(a->dane, sizeof(byte)*rozmiar, 1, fp);
                 #else
-                lseek(fp, 2*sizeof(int) + i * (sizeof(int) + sizeof(char)*size), SEEK_SET);
+                lseek(fp, 2*sizeof(int) + i * (sizeof(int) + sizeof(byte)*rozmiar), SEEK_SET);
                 write(fp, b, sizeof(int));
-                write(fp, b->dane, sizeof(char)*size);
+                write(fp, b->dane, sizeof(byte)*rozmiar);
                 write(fp, a, sizeof(int));
-                write(fp, a->dane, sizeof(char)*size);
+                write(fp, a->dane, sizeof(byte)*rozmiar);
                 #endif
                 posortowane = 0;
 			}
         }
+        #ifdef VERBOSE
         printf("\n");
+        #endif
     }
     free(a->dane);
     free(a);
     free(b->dane);
     free(b);
-    #ifndef SYS
+    #ifndef FHANDLE
 	fclose(fp);
 	#else
 	close(fp);
@@ -101,12 +99,12 @@ void sortuj(char* plikNazwa){
 
 void generuj(unsigned rozmiar, unsigned ilosc, char* plikNazwa){
     printf("\ngeneruj\n");
-    #ifndef SYS
+    #ifndef FHANDLE
 	FILE * fp = fopen(plikNazwa, "wb+");
 	#else
 	int fp = open(plikNazwa, O_CREAT | O_RDWR);
 	#endif
-	#ifndef SYS
+	#ifndef FHANDLE
 	if(fp == NULL)
 	#else
 	if(fp == -1)
@@ -117,7 +115,7 @@ void generuj(unsigned rozmiar, unsigned ilosc, char* plikNazwa){
 	}
 	printf("Rozmiar struktury: %d\tLiczebnosc struktury: %d\n", rozmiar, ilosc);
     //naglowek
-	#ifndef SYS
+	#ifndef FHANDLE
 	fwrite(&rozmiar, sizeof(int), 1, fp);
 	fwrite(&ilosc, sizeof(int), 1, fp);
 	#else
@@ -129,41 +127,29 @@ void generuj(unsigned rozmiar, unsigned ilosc, char* plikNazwa){
 	int i;
     for(i = 0 ; i < ilosc ; i++)
 	{
-		struktura * s = (struct struktura *)malloc(sizeof(char)*rozmiar+sizeof(int));
-		if(s == NULL)
-		{
-			printf("malloc error\n");
-			exit(97);
-		}
-		s->klucz = rand() % 100;
-        //printf("Wygenerowano klucz: %d\n", s->klucz);
+		struktura * s = (struct struktura *)malloc(sizeof(byte)*rozmiar+sizeof(int));
+		s->klucz = rand();
 		int j;
-		s->dane = (char *)malloc(sizeof(char) * rozmiar);
-		if(s->dane == NULL)
-		{
-			printf("malloc error\n");
-			exit(96);
-		}
+		s->dane = (byte *)malloc(sizeof(byte) * rozmiar);
 		for(j = 0 ; j < rozmiar ; j++){
-			s->dane[j] = (char)(rand() % 255);
-            //printf("%c",s->dane[j]);
+			s->dane[j] = (byte)(rand() % 255);
 		}
-		#ifndef SYS
+		#ifndef FHANDLE
 		fwrite(s, sizeof(int),1,fp);
         fwrite(s->dane, sizeof(byte)*rozmiar, 1, fp);
 		#else
 		write(fp, s, sizeof(int));
-		write(fp, s->dane, sizeof(char)*rozmiar);
+		write(fp, s->dane, sizeof(byte)*rozmiar);
 		#endif
 	}
-	#ifndef SYS
+	#ifndef FHANDLE
 	fclose(fp);
 	#else
 	close(fp);
 	#endif
 }
 
-int main(int argc, char **argv){
+int main(int argc, byte **argv){
     switch(argc){
         case 3:
             if( strcmp(argv[1],"sortuj") ){
@@ -191,7 +177,8 @@ int main(int argc, char **argv){
                 generuj(rozmiar,ilosc,argv[4]);
             }
         break;
-        default:printf("\nniepoprawne argumeny - ilosc\n");return 1;break;
+        default:printf("usage:\n\tsortuj [nazwa pliku]\n\tgeneruj [rozmiar danych struktury w B] [ilosc struktur] [nazwa pliku wyjsciowego]\n");
+                return 1;break;
     }
     return 0;
 }
