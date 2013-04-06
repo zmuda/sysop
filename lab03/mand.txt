@@ -1,0 +1,10 @@
+k sprawdzić czy działa nam ryglowanie:
+-Linux prawdopodobnie utworzył sobie defaultowo jakieś ramdiski. Żeby sprawdzić czy są można użyć komendy ls -l /dev/ram*
+-Formatujemy nasz ramdisk, np. mke2fs /dev/ram0 (ext2 o ile się nie mylę)
+-Montujemy ramdisk z opcją -o mand , np. mount -o mand /dev/ram1 ./mnt
+-Kopiujemy nasz plik testowy na nasz ramdisk
+-Zmieniamy jego uprawnienia na 2644
+-Włączamy program z ...../mnt/testowy_plik jako argumentem.
+I....działa. Domyślnie program czeka, aż rygiel zostanie zwolniony zanim wykona operację.
+:wq
+

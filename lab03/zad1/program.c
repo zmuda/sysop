@@ -1,5 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
+#include <string.h>
+#ifdef FHANDLE
+#include <unistd.h>
+#include <fcntl.h>
+#endif
 #define byte char
 
 typedef struct s {
@@ -70,7 +76,7 @@ void sortuj(char* plikNazwa){
                 fseek(fp, 2*sizeof(int) + i * (sizeof(int) + sizeof(byte)*rozmiar), SEEK_SET);
                 fwrite(b, sizeof(int),1,fp);
                 fwrite(b->dane, sizeof(byte)*rozmiar, 1, fp);
-                fwrite(a, sizeof(int),1,fp);
+               #include <unistd.h> fwrite(a, sizeof(int),1,fp);
                 fwrite(a->dane, sizeof(byte)*rozmiar, 1, fp);
                 #else
                 lseek(fp, 2*sizeof(int) + i * (sizeof(int) + sizeof(byte)*rozmiar), SEEK_SET);
@@ -127,7 +133,7 @@ void generuj(unsigned rozmiar, unsigned ilosc, char* plikNazwa){
 	int i;
     for(i = 0 ; i < ilosc ; i++)
 	{
-		struktura * s = (struct struktura *)malloc(sizeof(byte)*rozmiar+sizeof(int));
+            struktura* s = (struktura*)malloc(sizeof(byte)*rozmiar+sizeof(int));
 		s->klucz = rand();
 		int j;
 		s->dane = (byte *)malloc(sizeof(byte) * rozmiar);

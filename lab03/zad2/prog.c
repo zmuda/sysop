@@ -4,6 +4,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <string.h>
+#include <stdlib.h>
 
 unsigned long zlicz2(char* dirPath){
     DIR *dp;
@@ -12,7 +13,7 @@ unsigned long zlicz2(char* dirPath){
     dp = opendir (dirPath);
     unsigned long suma = 0;
     if (dp != NULL){
-        while (ep = readdir (dp)){
+        while ((ep=readdir(dp))){
             char tmp[256];
             if(ep->d_type==DT_DIR){
                 if( strcmp(ep->d_name,"..") && strcmp(ep->d_name,".") ){
