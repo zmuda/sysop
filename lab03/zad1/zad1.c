@@ -24,12 +24,9 @@ void sortuj(char* plikNazwa){
     int rozmiar, ilosc;
 	#ifndef FHANDLE
 	FILE * fp = fopen(plikNazwa, "r+b");
-	#else
-	int fp = open(plikNazwa, O_RDWR);
-	#endif
-	#ifndef FHANDLE
 	if(fp == NULL)
 	#else
+	int fp = open(plikNazwa, O_RDWR);
 	if(fp == -1)
 	#endif
 	{
@@ -76,7 +73,7 @@ void sortuj(char* plikNazwa){
                 fseek(fp, 2*sizeof(int) + i * (sizeof(int) + sizeof(byte)*rozmiar), SEEK_SET);
                 fwrite(b, sizeof(int),1,fp);
                 fwrite(b->dane, sizeof(byte)*rozmiar, 1, fp);
-               #include <unistd.h> fwrite(a, sizeof(int),1,fp);
+                fwrite(a, sizeof(int),1,fp);
                 fwrite(a->dane, sizeof(byte)*rozmiar, 1, fp);
                 #else
                 lseek(fp, 2*sizeof(int) + i * (sizeof(int) + sizeof(byte)*rozmiar), SEEK_SET);
@@ -104,11 +101,13 @@ void sortuj(char* plikNazwa){
 }
 
 void generuj(unsigned rozmiar, unsigned ilosc, char* plikNazwa){
+    #ifdef VERBOSE
     printf("\ngeneruj\n");
+    #endif
     #ifndef FHANDLE
 	FILE * fp = fopen(plikNazwa, "wb+");
 	#else
-	int fp = open(plikNazwa, O_CREAT | O_RDWR);
+	int fp = open(plikNazwa, O_CREAT | O_RDWR,S_IRUSR|S_IWUSR|S_IXUSR|S_IRGRP|S_IWGRP|S_IXGRP|S_IROTH|S_IWOTH|S_IXOTH);
 	#endif
 	#ifndef FHANDLE
 	if(fp == NULL)
@@ -116,10 +115,12 @@ void generuj(unsigned rozmiar, unsigned ilosc, char* plikNazwa){
 	if(fp == -1)
 	#endif
 	{
-		fprintf(stderr, "Nie moge otworzyc pliku: %s\n", plikNazwa);
+		printf("Nie moge otworzyc pliku: %s\n", plikNazwa);
 		exit(98);
 	}
+	#ifdef VERBOSE
 	printf("Rozmiar struktury: %d\tLiczebnosc struktury: %d\n", rozmiar, ilosc);
+    #endif
     //naglowek
 	#ifndef FHANDLE
 	fwrite(&rozmiar, sizeof(int), 1, fp);
@@ -131,9 +132,8 @@ void generuj(unsigned rozmiar, unsigned ilosc, char* plikNazwa){
     //cialo funkcji
     srand(time(NULL));
 	int i;
-    for(i = 0 ; i < ilosc ; i++)
-	{
-            struktura* s = (struktura*)malloc(sizeof(byte)*rozmiar+sizeof(int));
+    for(i = 0 ; i < ilosc ; i++){
+        struktura* s = (struktura*)malloc(sizeof(byte)*rozmiar+sizeof(int));
 		s->klucz = rand();
 		int j;
 		s->dane = (byte *)malloc(sizeof(byte) * rozmiar);

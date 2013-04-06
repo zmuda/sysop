@@ -1,6 +1,0 @@
-CC=gcc
-CFLAGS=-Wall
-zad1: zad1.c
-	$(CC) $(CFLAGS) $@.c -o $@.out
-clean:
-	rm -rf *.out

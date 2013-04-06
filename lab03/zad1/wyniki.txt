@@ -1,0 +1,27 @@
+SYSTEMOWO
+Rozmiar sortowanej struktury: 0	Liczebnosc struktur: 1200
+1.04sec
+
+Rozmiar sortowanej struktury: 512	Liczebnosc struktur: 1200
+1.67sec
+
+Rozmiar sortowanej struktury: 4098	Liczebnosc struktur: 1200
+5.39sec
+
+Rozmiar sortowanej struktury: 8192	Liczebnosc struktur: 1200
+8.45sec
+
+PROGRAMOWO
+Rozmiar sortowanej struktury: 0	Liczebnosc struktur: 1200
+2.37sec
+
+Rozmiar sortowanej struktury: 512	Liczebnosc struktur: 1200
+3.81sec
+
+Rozmiar sortowanej struktury: 4098	Liczebnosc struktur: 1200
+5.12sec
+
+Rozmiar sortowanej struktury: 8192	Liczebnosc struktur: 1200
+6.73sec
+
+
