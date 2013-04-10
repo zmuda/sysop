@@ -13,11 +13,9 @@ static struct tms st_cpu;
 static struct tms en_cpu;
 int i,PID,licznik = 0;
 int fn(void *arg) {
-
     licznik++;
     _exit(0);
-    return 0;
-
+    //return 0;
 }
 
 void start_clock(){
