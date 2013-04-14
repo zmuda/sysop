@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
+#include <unistd.h>
+#include <string.h>
+#include <sys/types.h>
 #include <sys/stat.h>
-#include <assert.h>
+#include <time.h>
 
 FILE* fd = 0;
 unsigned interval = 0;
@@ -33,7 +35,6 @@ int main (int argc, char **argv) {
         }
         fclose(fd);
     }
-    struct stat sb;
     time_t rawtime;
     struct tm timeinfo;
 

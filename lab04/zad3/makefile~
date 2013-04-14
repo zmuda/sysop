@@ -1,0 +1,14 @@
+CC = gcc
+SHELL = /bin/bash
+CFLAGS = -Wall -lrt -O2
+.PHONY = clean all
+
+all: policz
+
+policz: zad3.c
+	$(CC) $(CFLAGS)  $^ -o $@.out
+
+clean:
+	rm -f *.out
+	rm -f *.o
+

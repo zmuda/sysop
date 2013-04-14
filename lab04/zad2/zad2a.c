@@ -1,7 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
+#include <unistd.h>
+#include <string.h>
+#include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/wait.h>
+#include <time.h>
 #include <assert.h>
 
 FILE* fd = 0;
@@ -63,7 +67,7 @@ int main (int argc, char **argv) {
                 time(&rawtime);
                 timeinfo=*localtime(&rawtime);
                 sprintf(tmp, "./archiwum/%s_%d-%d-%d_%d-%d-%d", argv[1],1900+timeinfo.tm_year,timeinfo.tm_mon+1,timeinfo.tm_mday,timeinfo.tm_hour,timeinfo.tm_min,timeinfo.tm_sec);
-                if(execlp("cp", "cp", "i.txt", tmp, "-fp") < 0)printf("Blad exec\n");
+                if(execlp("cp", "cp", "i.txt", tmp, "-fp",NULL) < 0)printf("Blad exec\n");
             } else {
                 assert(PID>-1);
                 int b = -1;
