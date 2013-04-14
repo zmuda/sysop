@@ -1,6 +1,0 @@
-set terminal svg
-set output "parent.svg"
-plot 'tmp.tmp' using 2:4 title 'real' linecolor rgb 'blue','tmp.tmp' using 2:6 title 'user' linecolor rgb 'red','tmp.tmp' using 2:8 title 'system' linecolor rgb 'green'
-
-set output "parent.svg"
-replot
