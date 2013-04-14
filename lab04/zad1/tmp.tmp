@@ -1,0 +1,4 @@
+ChildCount	30000	RealTimeSum	0.80	UserTimeSum	0.00	SystemTimeSum	0.54	Sys+UsTimeSum	0.54	RealTimeChild	0.00	UserTimeChild	0.00	SystemTimeChild	0.00	Sys+UsTimeCh	0.00	RealTimeParent	0.80	UserTimeParent	0.00	SystemTimePar.	0.54	Sys+UsTimePar	0.54
+ChildCount	45000	RealTimeSum	1.23	UserTimeSum	0.01	SystemTimeSum	0.80	Sys+UsTimeSum	0.81	RealTimeChild	0.01	UserTimeChild	0.00	SystemTimeChild	0.00	Sys+UsTimeCh	0.00	RealTimeParent	1.22	UserTimeParent	0.01	SystemTimePar.	0.80	Sys+UsTimePar	0.81
+ChildCount	60000	RealTimeSum	1.60	UserTimeSum	0.02	SystemTimeSum	1.07	Sys+UsTimeSum	1.09	RealTimeChild	0.00	UserTimeChild	0.00	SystemTimeChild	0.00	Sys+UsTimeCh	0.00	RealTimeParent	1.60	UserTimeParent	0.02	SystemTimePar.	1.07	Sys+UsTimePar	1.09
+ChildCount	80000	RealTimeSum	2.12	UserTimeSum	0.03	SystemTimeSum	1.42	Sys+UsTimeSum	1.45	RealTimeChild	0.00	UserTimeChild	0.00	SystemTimeChild	0.00	Sys+UsTimeCh	0.00	RealTimeParent	2.12	UserTimeParent	0.03	SystemTimePar.	1.42	Sys+UsTimePar	1.45
