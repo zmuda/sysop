@@ -1,2 +1,0 @@
-bin_PROGRAMS=zad2
-zad2_SOURCES=zad2.c

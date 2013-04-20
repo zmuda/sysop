@@ -1,0 +1,10 @@
+aclocal		(tworzy plik aclocal.m4 zawierajay niezbedne makra)
+autoconf	(tworzy skrypt configure z pliku wejsciowego configure.ac)
+autoheader	(tworzy plik config.h.in. Skrypt configure utworzy z niego
+                 plik config.h)
+automake -a	(tworzy pliki Makefile.in z plikow Makefile.am. skrypt
+                 configure utworzy z plikow Makefile.in koncowe
+                 pliki Makefile)
+
+jedyna opcja configure:
+		--with-handler=sigaction

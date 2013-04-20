@@ -1,0 +1,55 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <signal.h>
+#include <wait.h>
+#include <sys/types.h>
+
+int main(int argc, char * argv[]){
+  /* UZYCIE */
+  int N;
+  if (argc != 2 || (N = atoi(argv[1]))<1 ){
+    printf("Nalezy podac ilosc sygnalow!\n");
+    //return 0;
+    N=2;
+  }
+
+  int i;
+
+  sigset_t full, empty;
+  sigfillset(&full);
+  sigemptyset(&empty);
+
+
+  int pid = vfork();
+
+  /* OBSLUGA BLEDOW */
+  if (pid == -1){
+    printf("ERROR!\n");
+  }
+  else if (pid == 0){
+    if (sigprocmask(SIG_BLOCK, &full, NULL) == -1)
+      exit(-1);
+
+    if (execl("receiver", "receiver", (char*)0) == -1)
+      exit(-1);
+
+    if (sigprocmask(SIG_SETMASK, &empty, NULL) == -1)
+      exit(-1);
+  }
+  /* WSZYSTKO POSZLO OK... */
+  else{
+    for (i=0; i<N; i++){
+      if (kill(pid, SIGUSR1) == -1){
+        perror("Blad wyslania sigusr1");
+      }
+     sleep(1);
+    }
+
+    if (kill(pid, SIGUSR2) == -1)
+      perror("Blad wyslania sigusr2");
+    int stat;
+    wait(&stat);
+  }
+  return 0;
+}
