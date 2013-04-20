@@ -8,7 +8,7 @@
 #include <wait.h>
 
 //zmienne odpowiadajace parametrom
-int w = 0, v = 1;
+int w = 0, v = 0;
 char* exeName =0;
 char** extensions=0;
 int tokens=0;
@@ -68,9 +68,7 @@ void checkDir(char **argv) {
         sum += WEXITSTATUS(r);
         proc--;
     }
-    if (v) {
-        printf("Katalog: %s || Plikow:  %d  || Sumarycznie:  %d\n", filename, sumback, sum);
-    }
+    if(v)printf("Katalog: %s\t\n\tPlikow:  %d\t\n\tSumarycznie:  %d\n", filename, sumback, sum);
     exit(sum);
 }
 void parseExtensions(){
