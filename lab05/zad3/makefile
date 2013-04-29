@@ -5,17 +5,17 @@ CFLAGS = -Wall
 
 all: policz
 
-zad3aS: zad3aSender.c
+zad3aSender: zad3aSender.c
 	$(CC) $(CFLAGS)  $^ -o $@.out
-zad3bS: zad3bSender.c
+zad3bSender: zad3bSender.c
 	$(CC) $(CFLAGS)  $^ -o $@.out
-zad3cS: zad3cSender.c
+zad3cSender: zad3cSender.c
 	$(CC) $(CFLAGS)  $^ -o $@.out
-zad3aR: zad3aReciever.c
+zad3aReciever: zad3aReciever.c
 	$(CC) $(CFLAGS)  $^ -o $@.out
-zad3bR: zad3bReciever.c
+zad3bReciever: zad3bReciever.c
 	$(CC) $(CFLAGS)  $^ -o $@.out
-zad3cR: zad3cReciever.c
+zad3cReciever: zad3cReciever.c
 	$(CC) $(CFLAGS)  $^ -o $@.out
 policz: zad3aS zad3aR zad3bS zad3bR zad3cS zad3cR
 
