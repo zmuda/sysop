@@ -1,8 +1,8 @@
-#include <sys/types.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
+#include <stdlib.h>
 
 #define READ_END 0
 #define WRITE_END 1
@@ -17,7 +17,6 @@ int main (int argc, char **argv){
     int fd2[2];
     pipe(fd);
     pipe(fd2);
-    int i;
     pid=fork();
     if (pid==0) {
         close(fd2[WRITE_END]);

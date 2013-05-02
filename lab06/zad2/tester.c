@@ -1,11 +1,9 @@
-#include <sys/types.h>
-#include <unistd.h>
+#include <sys/time.h>
 #include <stdio.h>
 #include <string.h>
-#include <errno.h>
+#include <stdlib.h>
 #include <fcntl.h>
 #include <sys/stat.h>
-#include <sys/types.h>
 #include <unistd.h>
 
 
@@ -26,7 +24,7 @@ long power(long a, long n, long mod){
 
 int witness(long a, long n){
     long t,u,i;
-    long prev,curr;
+    long prev,curr=0;
     u=n/2;
     t=1;
     while(!(u&1)){
@@ -84,16 +82,14 @@ int main (int argc, char **argv){
     char * path = "fifo";
     int fifo = open(path,O_RDONLY);
     char buff[128];
+    int r;
     while(1){
-        read(fifo,buff,sizeof(buff));
-        long num = atoi(buff);
-        if(IsPrime(num)){
-            //printf("%ld is PRIME\n",num);
-            num=0;
-        }else{
-            num=0;
-            //printf("%ld is complex\n",num);
+        r=read(fifo,buff,sizeof(buff));
+        if(!r){
+            sleep(1);
         }
+        long num = atoi(buff);
+        IsPrime(num);
     }
     return 0;
 }
