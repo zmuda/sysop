@@ -17,9 +17,7 @@ int main (int argc, char **argv){
         exit(2);
     }
     srand(time(0));
-    printf("yolo");
     int fifo = open(path,O_WRONLY);
-    printf("yolo");
     char buff[128];
     while(1){
         snprintf(buff, 10,"%d\n",rand()%100000000);

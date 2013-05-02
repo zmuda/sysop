@@ -85,7 +85,7 @@ int main (int argc, char **argv){
     int fifo = open(path,O_RDONLY);
     char buff[128];
     while(1){
-        read(fifo,buff,128);
+        read(fifo,buff,sizeof(buff));
         long num = atoi(buff);
         if(IsPrime(num)){
             //printf("%ld is PRIME\n",num);
