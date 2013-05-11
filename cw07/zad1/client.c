@@ -10,6 +10,9 @@
 #include <string.h>
 #include <signal.h>
 #include "defs.h"
+
+#define IPC
+
 int pid;
 /** funkcje porzadkujace */
 void clean1(){

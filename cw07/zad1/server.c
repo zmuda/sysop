@@ -9,7 +9,10 @@
 #include <time.h>
 #include <string.h>
 #include <signal.h>
+#include <mqueue.h>
 #include "defs.h"
+
+//#define IPC
 
 // nie mozna sie wylogowac!
 
@@ -25,11 +28,19 @@ int ids_size=0;
 *    - ale i tak to robie)
 * otwiera kolejke w tym pliku
 */
+#ifdef IPC
 int createQueue(char* name){
-	close(open(name,O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR | S_IRGRP));
+    close(open(name,O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR | S_IRGRP));
 	int queue_id= msgget(ftok(name,1), IPC_CREAT | S_IRUSR | S_IWUSR | S_IWGRP);
 	return queue_id;
 }
+#else
+//mqd_t createQueue(char* name){
+    //close(open(name,O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR | S_IRGRP));
+	//mqd_t queue_id= mq_open(name, IPC_CREAT | S_IRUSR | S_IWUSR | S_IWGRP);
+	//return queue_id;
+//}
+#endif
 
 /**
 * pomocnicza - sprzata kolejke i plik (nie gromadza sie komunikaty przypadkiem)
@@ -89,7 +100,7 @@ int main(int argc, char** argv){
             /** nowy klieny - tworzymy mu kolejke */
             sprintf(newbuff,"tmp/%s.rip",buff.text);
             int created_id = createQueue(newbuff);
-            printf("logging %s at %s as %d\n",buff.text,newbuff,id);
+            printf("logging %s at %s as %d\n",buff.text,newbuff,created_id);
             /** 'pakujemy' id kolejki w opakowanie dla wiadomosci w kolejce
             *   ustalimy typ - umozliwienie transmisji dwukerunkowej
             */
@@ -97,13 +108,13 @@ int main(int argc, char** argv){
             id.id=created_id;
             id.mtype=SERVERS;
             /** wysylamy id kolejki */
-            rc = msgsnd(queue_id, &id, sizeof(id2), 0);
+            rc = msgsnd(queue_id, &id, sizeof(id), 0);
             if (rc < 0) {
                 printf("id not send, msgsnd errrno: %d\n", rc);
                 return 1;
             }
             /** uzupelniamy 'mape' */
-            ids[ids_size]=id;
+            ids[ids_size]=created_id;
             files[ids_size]=malloc(sizeof(char)*strlen(buff.text));
             sprintf(files[ids_size],"%s\n",buff.text);
             printf("\t%s\tis now registered\n",files[ids_size]);
