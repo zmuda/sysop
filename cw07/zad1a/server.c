@@ -12,8 +12,6 @@
 #include <mqueue.h>
 #include "defs.h"
 
-//#define IPC
-
 // nie mozna sie wylogowac!
 
 int queue_id;
@@ -28,19 +26,12 @@ int ids_size=0;
 *    - ale i tak to robie)
 * otwiera kolejke w tym pliku
 */
-#ifdef IPC
 int createQueue(char* name){
     close(open(name,O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR | S_IRGRP));
 	int queue_id= msgget(ftok(name,1), IPC_CREAT | S_IRUSR | S_IWUSR | S_IWGRP);
 	return queue_id;
 }
-#else
-//mqd_t createQueue(char* name){
-    //close(open(name,O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR | S_IRGRP));
-	//mqd_t queue_id= mq_open(name, IPC_CREAT | S_IRUSR | S_IWUSR | S_IWGRP);
-	//return queue_id;
-//}
-#endif
+
 
 /**
 * pomocnicza - sprzata kolejke i plik (nie gromadza sie komunikaty przypadkiem)
@@ -60,6 +51,8 @@ void clean1(){
         closeQueue(files[i],ids[i]);
         free(files[i]);
     }
+    free(ids);
+    free(files);
 }
 void clean2(int i){
     clean1();
@@ -86,7 +79,7 @@ int main(int argc, char** argv){
     queue_id = createQueue("tmp/servers.rip");
     /** czyszczeniw na wyjsciu */
     atexit(clean1);
-    signal(SIGINT,clean2);
+    //signal(SIGINT,clean2);
     int rc;
     while(1){
         text buff;

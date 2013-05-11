@@ -8,10 +8,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
-#include <signal.h>
+#include <sys/times.h>
 #include "defs.h"
 
-#define IPC
 
 int pid;
 /** funkcje porzadkujace */
@@ -51,11 +50,6 @@ int main(int argc, char * argv[]){
     message msg;
     message reply;
     int id = buff.id;
-    /* //wlasciwie tak mozna uzyskac ta kolejke
-    char buff2[128];
-    sprintf(buff2,"tmp/%s.rip",name.text);
-    int id = msgget(ftok(buff2,1), 0);
-    */
     /** mamy drugi proces na obsluge przychodzacych wiadomosci */
     pid = fork();
     atexit(clean1);
@@ -65,7 +59,7 @@ int main(int argc, char * argv[]){
             /** pakujemy tresc do struktury z data, adreatem, typem(dla obslugi kolejki) */
             fgets(msg.to, sizeof(msg.to), stdin);
             fgets(msg.what, sizeof(msg.what), stdin);
-            msg.when=times();
+            msg.when=times(NULL);
             msg.mtype=CLIENTS;
             int rc = msgsnd(id, &msg, sizeof(msg), 0);
             if (rc < 0) {
