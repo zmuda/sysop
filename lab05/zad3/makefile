@@ -17,7 +17,7 @@ zad3bReciever: zad3bReciever.c
 	$(CC) $(CFLAGS)  $^ -o $@.out
 zad3cReciever: zad3cReciever.c
 	$(CC) $(CFLAGS)  $^ -o $@.out
-policz: zad3aS zad3aR zad3bS zad3bR zad3cS zad3cR
+policz: zad3aSender zad3aReciever zad3bSender zad3bReciever zad3cSender zad3cReciever
 
 clean:
 	rm -f *.out

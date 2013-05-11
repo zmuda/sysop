@@ -77,9 +77,40 @@ inline int IsPrime( long number ){
    if n < 3,474,749,660,383, it is enough to test a = 2, 3, 5, 7, 11, and 13.
    if n < 341,550,071,728,321, it is enough to test a = 2, 3, 5, 7, 11, 13, and 17.*/
 }
-
+void aqquire(){
+    int fd = open("lock",O_RDWR);
+    flock(fd,LOCK_EX);
+    char buff[32];
+    read(fd,buff,sizeof(buff));
+    long num = atoi(buff);
+    if(!num)exit(98);
+    num--;
+    lseek(fd,0,SEEK_SET);
+    snprintf(buff, 10,"0%d\n",num);
+    write(fd,buff,sizeof(buff));
+    close(fd);
+    flock(fd,LOCK_UN);
+}
+void release(){
+    int fd = open("lock",O_RDWR);
+    flock(fd,LOCK_EX);
+    char buff[32];
+    read(fd,buff,sizeof(buff));
+    long num = atoi(buff);
+    num++;
+    lseek(fd,0,SEEK_SET);
+    snprintf(buff, 10,"%d\n",num);
+    write(fd,buff,sizeof(buff));
+    close(fd);
+    flock(fd,LOCK_UN);
+}
 int main (int argc, char **argv){
-    char * path = "fifo";
+    if(argc<2){
+        printf("\nusage: fifo_name\n");
+        return -1;
+    }
+    aqquire();
+    char * path = argv[1];
     int fifo = open(path,O_RDONLY);
     char buff[128];
     int r;
@@ -89,7 +120,9 @@ int main (int argc, char **argv){
             sleep(1);
         }
         long num = atoi(buff);
-        IsPrime(num);
+        printf("%ld is prime: %d\n",num,IsPrime(num));
+        sleep(2);
     }
+    release();
     return 0;
 }

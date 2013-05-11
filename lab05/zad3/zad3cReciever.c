@@ -5,7 +5,7 @@
 #include <time.h>
 #include <wait.h>
 
-
+union sigval value;
 int licznik = 0;
 
 void fun1(int x) {
@@ -19,11 +19,11 @@ void fun2(int x) {
     int l=licznik;
     while(l--){
         printf(" -> Zwracam zadany sygnał...\n");
-        kill(parent,SIGRTMAX);
-        sleep(2);
+        sigqueue(parent,SIGRTMAX,value);
+        //sleep(2);
     }
     printf(" -> Wysyłam potwierdzenie\n");
-    kill(parent,SIGRTMIN);
+    sigqueue(parent,SIGRTMIN,value);
     exit(licznik);
 }
 

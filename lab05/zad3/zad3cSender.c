@@ -16,7 +16,7 @@ void handler1(int x){
     printf("odebrano zwrotkę\n");
     ctr++;
 }
-
+union sigval value;
 int main(int argc, char * argv[]) {
     signal(SIGRTMAX,handler1);
     signal(SIGRTMIN,handler2);
@@ -29,7 +29,7 @@ int main(int argc, char * argv[]) {
     int PID=fork();
     if(PID==0){
         const char* name ="zad3cReciever";
-        if(execve(name,NULL,NULL) <0){
+        if(execl(name,name,NULL) <0){
             printf("Blad exec\n");
             return -21;
         }
@@ -38,12 +38,11 @@ int main(int argc, char * argv[]) {
         i=N;
         while(i--){
             printf("posłano SIGRTMAX #%d\n",N-i);
-            kill(PID,SIGRTMAX);
-            sleep(1);
+            sigqueue(PID,SIGRTMAX,value);
+            //sleep(1);
         }
         printf("posłano SIGRTMIN\n");
-        kill(PID,SIGRTMIN);
-
+        sigqueue(PID,SIGRTMIN,value);
         while(1){}
     }
     return 11;

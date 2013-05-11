@@ -31,7 +31,7 @@ int main(int argc, char * argv[]) {
     int PID=fork();
     if(PID==0){
         const char* name ="zad3bReciever";
-        if(execve(name,NULL,NULL) <0)printf("Blad exec\n");
+        if(execl(name,name,NULL) <0)printf("Blad exec\n");
     }else{
         sleep(1);
         i=N;
