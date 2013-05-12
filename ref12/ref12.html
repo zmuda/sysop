@@ -1,0 +1,341 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=us-ascii">
+	<TITLE>W&#261;tki.Tworzenie, zarz&#261;dzanie, realizacje systemowe i biblioteki.</TITLE>
+	<STYLE TYPE="text/css">
+	<!--
+		@page { margin: 1in }
+		P { margin-bottom: 0.08in; direction: ltr; color: #000000; font-family: "Arial", sans-serif; font-size: 11pt; font-style: normal; font-weight: normal; line-height: 115%; text-align: left; text-decoration: none }
+		A:link { so-language: zxx }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="en-US" TEXT="#000000" DIR="LTR" STYLE="border: none; padding: 0in">
+<P STYLE="margin-top: 0.33in"><FONT FACE="Trebuchet MS, sans-serif"><FONT SIZE=4 STYLE="font-size: 16pt"><FONT FACE="Arial, sans-serif"><B>W&#261;tki.
+Tworzenie, zarz&#261;dzanie, realizacje systemowe i biblioteki.</B></FONT></FONT></FONT></P>
+
+<BR><BR><BR>
+<p><a href="#watki">w&#261;tki</a></p>
+<p><a href="#tworzenie">tworzenie</a></p>
+<p><a href="#zarzadanie">zarz&#261;dzanie</a></p>
+<p><a href="#realizacje">realizacje systemowe i biblioteki</a></p>
+
+<P STYLE="margin-bottom: 0in"><BR>
+</P>
+<P STYLE="margin-bottom: 0in" ID="watki"><B>W&#261;tki</B></P>
+<P STYLE="margin-bottom: 0in"><BR>
+</P>
+<P STYLE="margin-bottom: 0in">W&#261;tek najcz&#281;&#347;ciej
+postrzegany jest jako zadanie, kt&oacute;re mo&#380;e by&#263;
+wykonywane r&oacute;wnocze&#347;nie z innymi sobie podobnymi. Jest to
+dobry pocz&#261;tek do  zastanowienia si&#281; czym naprawd&#281;
+jest w&#261;tek.</P>
+<P STYLE="margin-bottom: 0in">Maj&#261;c na my&#347;li t&#261;
+powszechn&#261; definicj&#281; niemo&#380;liwe jest uchwyci&#263;
+czym r&oacute;&#380;ni si&#281; w&#261;tek od procesu. Nale&#380;y
+wyja&#347;ni&#263;, &#380;e proces sk&#322;ada si&#281; z w&#261;tk&oacute;w,
+kt&oacute;re wykazuj&#261; siln&#261; zale&#380;no&#347;&#263; od
+procesu je posiadaj&#261;cego. Taka kompozycja pozwala osi&#261;gn&#261;&#263;
+cel, kt&oacute;ry przy&#347;wieca&#322; ich opracowaniu - mianowicie
+wsp&oacute;&#322;dzielenie zasob&oacute;w.</P>
+<P STYLE="margin-bottom: 0in">Nale&#380;y przypomnie&#263;, &#380;e
+ka&#380;dy proces posiada niejako w&#322;asny mikrosystem, tj. w&#322;asny
+<B>segmenty stosu,  kodu, danych i stert&#281;</B>. Cz&#281;&#347;&#263;
+z tych danych mo&#380;e okaza&#263; si&#281; potrzebna do
+funkcjonowania innego procesu. Na tym etapie nale&#380;a&#322;oby
+wykorzysta&#263; mechanizmy komunikacji mi&#281;dzy procesami i 
+techniki wsp&oacute;&#322;dzielenia przez nie danych. Jest to jak
+najbardziej wykonalne, ale czy nie mo&#380;na by zrezygnowa&#263; z
+cz&#281;&#347;ci <B>izolacji </B>mi&#281;dzy procesami? Tu z pomoc&#261;
+spiesz&#261; w&#261;tki - spo&#347;r&oacute;d wymienionych element&oacute;w
+nie wsp&oacute;&#322;dziel&#261; jedynie segmentu <B>stosu</B>,
+kt&oacute;rego izolacja niezb&#281;dna jest do utrzymania
+niezale&#380;nego wykonania ka&#380;dego z w&#261;tk&oacute;w. M&oacute;wimy
+o wsp&oacute;&#322;dzieleniu w obr&#281;bie procesu.<BR>Poza
+wymienionymi elementami procesu posiada on tak&#380;e zbi&oacute;r
+deskryptor&oacute;w plik&oacute;w, zestaw rejestr&oacute;w, tablic&#281;
+sygna&#322;&oacute;w czy licznik rozkaz&oacute;w. Spo&#347;r&oacute;d
+wymienionych w&#261;tki wsp&oacute;&#322;dziel&#261; deskryptory i
+tablic&#281; sygna&#322;&oacute;w. Pozosta&#322;e (podobnie jak
+segment stosu) s&#261; niezb&#281;dne do utrzymania niezale&#380;no&#347;ci
+wykonania. Dodatkow&#261; cz&#281;&#347;ci&#261; sk&#322;adow&#261;
+w&#261;tku s&#261; indywidualne dane  oraz oczywi&#347;cie informacje
+o stanie.</P>
+<P STYLE="margin-bottom: 0in">Ponadto proces cechuje <B>przestrze&#324;
+adresowa</B>, kt&oacute;ra r&oacute;wnie&#380; jest identyczna dla
+ka&#380;dego w&#261;tku w ramach procesu wielow&#261;tkowego.</P>
+<P STYLE="margin-bottom: 0in">Taka konstrukcja pozwala osi&#261;gn&#261;&#263;
+oddziene, asynchroniczne wykonanie ka&#380;dego z w&#261;tk&oacute;w
+przy maksymalnym udziale wsp&oacute;&#322;dzielenia zasob&oacute;w.
+Oczywi&#347;cie takie wsp&oacute;&#322;dzielenie zasob&oacute;w
+niesie za sob&#261; konieczno&#347;&#263; umiej&#281;tnego
+przetwarzania cz&#281;&#347;ci z nich, jednak <B>synchronizacja</B>
+nie jest przedmiotem tego referatu.</P>
+<P STYLE="margin-bottom: 0in">Nieodzown&#261; cz&#281;&#347;ci&#261;
+wiedzy o w&#261;tkach jest znajomo&#347;&#263; podzia&#322;u w&#261;tk&oacute;w
+na w&#261;tki poziomu <B>u&#380;ytkownika</B> i w&#261;tki poziomu
+<B>j&#261;dra</B>. W&#261;tki poziomu j&#261;dra to te, kt&oacute;rych
+wykonaniem steruje j&#261;dro. Niesie to za sob&#261; mo&#380;liwo&#347;&#263;
+delegacji przez j&#261;dro wykonania w&#261;tk&oacute;w na r&oacute;&#380;nych
+procesorach za cen&#281; kosztu <B>prze&#322;&#261;czania w&#261;tk&oacute;w</B>
+bezpo&#347;rednio <B>przez j&#261;dro</B>. Odpowiedzi&#261; na ten
+koszt s&#261; w&#261;tki poziomu u&#380;ytkownika, kt&oacute;re w
+ramach procesu posiadaj&#261; w&#322;asny mechanizm planowania (tzw.
+<B>scheduler</B>), co okazuje si&#281; wydajniejsze. Opr&oacute;cz
+rezygnacji z dost&#281;pnych wielu procesor&oacute;w fizycznich
+jednak pojawia si&#281; kolejna niedogodno&#347;&#263; - wyst&#261;pienie
+operacji blokuj&#261;cej na dowolnym z w&#261;tk&oacute;w powoduje
+<B>blokowanie ca&#322;ego procesu </B>(wraz z innymi w&#261;tkami w
+ramach tego procesu). Podsumowuj&#261;c doboraj&#261;c rodzaj
+realizacji wielow&#261;tkowo&#347;ci powinni&#347;my zastanowi&#263;
+si&#281;, kt&oacute;re s&#261; odpowiedniejsze dla naszego
+zastosowania.</P>
+<P STYLE="margin-bottom: 0in"><BR>
+</P>
+<P STYLE="margin-bottom: 0in" ID="realizacje"><B>Realizacje systemowe i biblioteki</B></P>
+<P STYLE="margin-bottom: 0in"><BR>
+</P>
+<P STYLE="margin-bottom: 0in">Przedmiotem tego ust&#281;pu s&#261;
+realizacje systemowe w&#261;tk&oacute;w przestrzeni j&#261;dra, w
+odr&oacute;&#380;nieniu od w&#261;tk&oacute;w w przestrzeni
+u&#380;ytkownika, kt&oacute;re wymagaj&#261; realizacji nie
+systemowych a programowych (co wynika z ich natury). W celu
+wykorzystania w&#261;tk&oacute;w przestrzeni uzytkownika warto
+rozwa&#380;y&#263; wykorzystanie biblioteki <B>GNU Portable Threads</B>.</P>
+<P STYLE="margin-bottom: 0in"><BR>
+</P>
+<P STYLE="margin-bottom: 0in">Przechodz&#261;c do sposob&oacute;w
+praktycznego wykorzystania w&#261;tk&oacute;w nale&#380;y ze wzgl&#281;d&oacute;w
+historycznych wspomnie&#263; jak tworzono w&#261;tki przed
+pojawieniem si&#281; obecnie stosowanych rozwi&#261;za&#324;.</P>
+<P STYLE="margin-bottom: 0in"><BR>
+</P>
+<P STYLE="text-indent: 0.5in; margin-bottom: 0in">int <B>clone</B>(int
+(*fn)(void* ), void* child_stack, int flags, void* arg);</P>
+<P STYLE="margin-bottom: 0in">	</P>
+<P STYLE="text-indent: 0.5in; margin-bottom: 0in">fn 	- funkcja,
+kt&oacute;ra jest wykonywana przez w&#261;tek</P>
+<P STYLE="text-indent: 0.5in; margin-bottom: 0in">child_stack 	-
+wska&#378;nik na pocz&#261;tek stosu nowotworzonego w&#261;tku</P>
+<P STYLE="text-indent: 0.5in; margin-bottom: 0in">arg 	- argumenty
+funkcji fn</P>
+<P STYLE="text-indent: 0.5in; margin-bottom: 0in"><BR>
+</P>
+<P STYLE="margin-bottom: 0in">U&#380;ycie wy&#380;ej zaprezentowanego
+wywo&#322;ania systemowego powoduje utworznie nowego <B>procesu</B>,
+kt&oacute;ry jednak wsp&oacute;&#322;dzieli przestrze&#324; adresow&#261;
+z procesem klonowanym. Mo&#380;na traktowa&#263; taki byt jako w&#261;tek
+w przestrzeni j&#261;dra, cho&#263; niezupe&#322;nie spe&#322;nia on
+wymagania nakre&#347;lone wcze&#347;niej. Nale&#380;y wspomnie&#263;,
+&#380;e opis w&#261;tku w tym referacie wynika bezpo&#347;rednio z
+normy <B>POSIX Threads</B>. Standard ten powsta&#322;, aby
+ujednolici&#263; w&#261;tki i podnie&#347;&#263; stopie&#324;
+przenaszalno&#347;ci rozwi&#261;za&#324; na nich opartych. Jest to
+niekwestionowany standard na chwil&#281; obecn&#261;.</P>
+<P STYLE="margin-bottom: 0in">Krokiem do osi&#261;gni&#281;cia
+znanych nam rozwi&#261;za&#324; by&#322; projekt<B> LinuxThreads</B>,
+kt&oacute;ry by&#322; pierwsz&#261; powszechn&#261; implementacj&#261;
+w&#261;tk&oacute;w w przestrzeni <B>j&#261;dra</B>. Opiera&#322; si&#281;
+na poprzednio przedstawionym wywo&#322;aniu systemowym <B>clone</B>.
+Wad&#261; tego rozwi&#261;zania by&#322;a jedynie cz&#281;&#347;ciowa
+implementacja normy POSIX oraz ograniczenia w stosowaniu sygna&#322;&oacute;w
+(sygna&#322;y SIGUSR1, SIGUSR2 by&#322;y zarezerwowane).</P>
+<P STYLE="margin-bottom: 0in">Nast&#281;pc&#261; LinuxThreads i
+obecnie funkcjonuj&#261;c&#261; implementaj&#261; w&#261;tk&oacute;w
+przestrzeni j&#261;dra jest <B>Native POSIX Thread Library</B>
+(NPTL). Jak sama nazwa wskazjue z t&#261; implementacj&#261; zwi&#261;zana
+jest biblioteka libpthread. NPTL jest w odr&oacute;&#380;nieniu do
+LinuxThreads w pe&#322;ni kompatybilna z POSIX Threads i pozbawiona
+wad trapi&#261;cych wy&#380;ej wymienion&#261;.</P>
+<P STYLE="margin-bottom: 0in"><BR>
+</P>
+<P STYLE="margin-bottom: 0in">Wg. normy POSIX w&#261;tki <B>wsp&oacute;&#322;dziel&#261;</B>:</P>
+<UL>
+	<LI><P STYLE="margin-bottom: 0in"><FONT SIZE=2><SPAN STYLE="background: #ffffff">-
+	PID, PPID, GID procesu, SID (session ID)</SPAN></FONT></P>
+	<LI><P STYLE="margin-bottom: 0in"><FONT SIZE=2><SPAN STYLE="background: #ffffff">-
+	kontroluj&#261;cy je terminal</SPAN></FONT></P>
+	<LI><P STYLE="margin-bottom: 0in"><FONT SIZE=2><SPAN STYLE="background: #ffffff">-
+	UID, GID </SPAN></FONT>
+	</P>
+	<LI><P STYLE="margin-bottom: 0in"><FONT SIZE=2><SPAN STYLE="background: #ffffff">-
+	deskryptory plik&oacute;w</SPAN></FONT></P>
+	<LI><P STYLE="margin-bottom: 0in"><FONT SIZE=2><SPAN STYLE="background: #ffffff">-
+	lock&rsquo;i utworzone na plikach (fcntl)</SPAN></FONT></P>
+	<LI><P STYLE="margin-bottom: 0in"><FONT SIZE=2><SPAN STYLE="background: #ffffff">-
+	ustawiona obs&#322;uga sygna&#322;&oacute;w</SPAN></FONT></P>
+	<LI><P STYLE="margin-bottom: 0in"><FONT SIZE=2><SPAN STYLE="background: #ffffff">-
+	umaska dla tworzonych plik&oacute;w</SPAN></FONT></P>
+	<LI><P STYLE="margin-bottom: 0in"><FONT SIZE=2><SPAN STYLE="background: #ffffff">-
+	katalogi: aktualny i root</SPAN></FONT></P>
+	<LI><P STYLE="margin-bottom: 0in"><FONT SIZE=2><SPAN STYLE="background: #ffffff">-
+	timer&rsquo;y</SPAN></FONT></P>
+	<LI><P STYLE="margin-bottom: 0in"><FONT SIZE=2><SPAN STYLE="background: #ffffff">-
+	warto&#347;&#263; nice</SPAN></FONT></P>
+	<LI><P STYLE="margin-bottom: 0in"><FONT SIZE=2><SPAN STYLE="background: #ffffff">-
+	ograniczenia zasob&oacute;w</SPAN></FONT></P>
+	<LI><P STYLE="margin-bottom: 0in"><FONT SIZE=2><SPAN STYLE="background: #ffffff">-
+	pomiar wykorzystania procesora</SPAN></FONT></P>
+</UL>
+<P STYLE="margin-bottom: 0in"><BR>
+</P>
+<P STYLE="margin-bottom: 0in"><FONT SIZE=2><SPAN STYLE="background: #ffffff">Atrybutami
+ka&#380;dego watku, opr&oacute;cz w&#322;asnego <B>stosu,</B> s&#261;
+tak&#380;e:</SPAN></FONT></P>
+<UL>
+	<LI><P STYLE="margin-bottom: 0in"><FONT SIZE=2><SPAN STYLE="background: #ffffff">-
+	thread ID </SPAN></FONT>
+	</P>
+	<LI><P STYLE="margin-bottom: 0in"><FONT SIZE=2><SPAN STYLE="background: #ffffff">-
+	maska sygna&#322;&oacute;w</SPAN></FONT></P>
+	<LI><P STYLE="margin-bottom: 0in"><FONT SIZE=2><SPAN STYLE="background: #ffffff">-
+	zmienna <I>errno</I></SPAN></FONT></P>
+	<LI><P STYLE="margin-bottom: 0in"><FONT SIZE=2><SPAN STYLE="background: #ffffff">-
+	alternatywne stosy sygna&#322;&oacute;w (patrz: sigaltstack)</SPAN></FONT></P>
+	<LI><P STYLE="margin-bottom: 0in"><FONT SIZE=2><SPAN STYLE="background: #ffffff">-
+	polityka i piorytet planisty czasu rzeczywistego (patrz:
+	sched_setscheduler, sched_setparam)</SPAN></FONT></P>
+</UL>
+<P STYLE="margin-bottom: 0in"><FONT SIZE=2><SPAN STYLE="background: #ffffff">Na
+systemach <B>linux</B> ponadto:</SPAN></FONT></P>
+<UL>
+	<LI><P STYLE="margin-bottom: 0in"><FONT SIZE=2><SPAN STYLE="background: #ffffff">-
+	capabilities (obejscia kontroli uprawnie&#324; j&#261;dra)</SPAN></FONT></P>
+	<LI><P STYLE="margin-bottom: 0in"><FONT SIZE=2><SPAN STYLE="background: #ffffff">-
+	CPU affinity (definicje na jakich procesorach mo&#380;na wykonywa&#263;
+	si&#281;)</SPAN></FONT></P>
+</UL>
+<P STYLE="margin-bottom: 0in"><BR>
+</P>
+<P STYLE="margin-bottom: 0in"><BR>
+</P>
+<P STYLE="margin-bottom: 0in"><B>Zarz&#261;dzanie w&#261;tkami,
+tworzenie.</B></P>
+<P STYLE="margin-bottom: 0in"><BR>
+</P>
+<P STYLE="margin-bottom: 0in">Nale&#380;y nadmieni&#263;, &#380;e
+zarz&#261;dzanie w&#261;tkami prezentowane jest dla NPTL.</P>
+<P STYLE="margin-bottom: 0in">Wszystkie ni&#380;ej wymienione funkcje
+zwracaj&#261; int, kt&oacute;ry jest zerem albo kodem b&#322;&#281;du
+je&#380;eli wykonanie nie powiod&#322;o si&#281;.</P>
+<P STYLE="margin-bottom: 0in">Aby korzysta&#263; z NPTL nale&#380;y
+kompilowa&#263; i linkowa&#263; z z opcj&#261; <B>-pthreads</B></P>
+<P STYLE="margin-bottom: 0in"><BR>
+</P>
+<P STYLE="margin-bottom: 0in" ID="tworzenie">Tworzenie.</P>
+<P ALIGN=JUSTIFY STYLE="margin-bottom: 0in">	<B>pthread_create</B>(pthread_t
+*tid, const pthread_attr_t *attr,<BR>		void *(*start_routine)(void*),
+void *arg)</P>
+<P STYLE="margin-bottom: 0in"><BR>
+</P>
+<P STYLE="margin-bottom: 0in">	tid 	- bufor na ID nowoutworzonego
+w&#261;tku</P>
+<P STYLE="margin-bottom: 0in">	attr	- atrybuty tworzonego w&#261;tku
+(domy&#347;lnym atrybutom odpowiada NULL)</P>
+<P STYLE="margin-bottom: 0in">	start_routine 	- funkcja do wykonania
+przez w&#261;tek</P>
+<P STYLE="margin-bottom: 0in">	arg 	- argumenty przekazywane do
+funkcji (struktura z argumentami)</P>
+<P STYLE="margin-bottom: 0in"><BR>
+</P>
+<P STYLE="margin-bottom: 0in">Wywo&#322;anie zako&#324;czone sukcesem
+tworzy nowy w&#261;tek w ramach procesu do kt&oacute;rego nale&#380;y
+w&#261;tek wykonuj&#261;cy ten kod. Nale&#380;y wspomnie&#263;, &#380;e
+ka&#380;dy proces posiada co najmniej jeden w&#261;tek, a dok&#322;adnie
+jeden, je&#380;eli sami kolejnych nie dodamy.</P>
+<P STYLE="margin-bottom: 0in">Wywo&#322;anie mo&#380;e zako&#324;czy&#263;
+si&#281; pora&#380;k&#261; z powodu niedostatecznych zasob&oacute;w
+albo przekroczenia sta&#322;ej okre&#347;laj&#261;cej maksymaln&#261;
+ilo&#347;&#263; w&#261;tk&oacute;w.</P>
+<P STYLE="margin-bottom: 0in">Godnym uwagi jest fakt, &#380;e
+utworzony w&#261;tek natychmiast zaczyna si&#281; wykonywa&#263;.</P>
+<P STYLE="margin-bottom: 0in"><BR>
+</P>
+<P STYLE="margin-bottom: 0in">Struktura <B>pthread_attr_t</B> posiada
+zwi&#261;zane funkcje:</P>
+<P STYLE="text-indent: 0.5in; margin-bottom: 0in">pthread_attr_init(pthread_attr_t
+*attr)		- inicjowanie</P>
+<P STYLE="text-indent: 0.5in; margin-bottom: 0in">pthread_attr_destroy(pthread_attr_t
+*attr)	- deinicjowanie<BR><BR>
+</P>
+<P STYLE="text-indent: 0.5in; margin-bottom: 0in">Ka&#380;dy atrybut
+tej struktury posiada zestaw dw&oacute;ch funkcji:</P>
+<UL>
+	<UL>
+		<LI><P STYLE="margin-bottom: 0in">pthread_attr_get[nazwa_atrybutu]</P>
+		<LI><P STYLE="margin-bottom: 0in">pthread_attr_set[nazwa_atrybutu]</P>
+	</UL>
+</UL>
+<P STYLE="text-indent: 0.5in; margin-bottom: 0in"><BR>
+</P>
+<P STYLE="text-indent: 0.5in; margin-bottom: 0in">Dost&#281;pne
+atrybuty:</P>
+<UL>
+	<UL>
+		<LI><P STYLE="margin-bottom: 0in">detachstate - okre&#347;la czy
+		mo&#380;na czeka&#263; na zako&#324;czenie w&#261;tku</P>
+		<LI><P STYLE="margin-bottom: 0in">guardsize - rozmiar (w bajtach)
+		buforu przepe&#322;nienia na ko&#324;cu stosu</P>
+		<LI><P STYLE="margin-bottom: 0in">stackaddr - adres pocz&#261;tku
+		stosu</P>
+		<LI><P STYLE="margin-bottom: 0in">stacksize - rozmiar stosu w&#261;tku
+		(w bajtach)</P>
+	</UL>
+</UL>
+<P STYLE="margin-bottom: 0in"><BR>
+</P>
+<P STYLE="margin-bottom: 0in"><BR>
+</P>
+<P STYLE="margin-bottom: 0in"><BR>
+</P>
+<P STYLE="margin-bottom: 0in" ID="zarzadanie">Zarz&#261;dzanie.</P>
+<P STYLE="margin-bottom: 0in"><B>pthread_exit</B>(void *retval) 
+</P>
+<P STYLE="margin-bottom: 0in">- zako&#324;czenie
+w&#261;tku, gdzie retval to kod zako&#324;czenia w&#261;tku</P>
+<P STYLE="margin-bottom: 0in"><B>pthread_join</B>(pthread_t th, void
+**retval)</P>
+<P STYLE="margin-bottom: 0in">	- &ldquo;&#322;&#261;czenie w&#261;tk&oacute;w&rdquo;</P>
+<P STYLE="margin-bottom: 0in">	- blokuje w&#261;tek w oczekiwaniu na
+zako&#324;czenie w&#261;tku th</P>
+<P STYLE="margin-bottom: 0in">	- retval wskazuje na miejsce, gdzie
+kod zako&#324;czenia w&#261;tku zostanie umieszczony</P>
+<P STYLE="margin-bottom: 0in"><SPAN STYLE="background: #ffffff"><B>pthread_detach</B>(pthread_t
+th)</SPAN></P>
+<P STYLE="margin-bottom: 0in"><SPAN STYLE="background: #ffffff">	-
+&ldquo;od&#322;&#261;czenie&rdquo; w&#261;tku th</SPAN></P>
+<P STYLE="margin-bottom: 0in"><B>pthread_cancel</B>(pthread_t thread)
+</P>
+<P STYLE="margin-bottom: 0in">	- anulowanie w&#261;tku th, tj.
+wys&#322;anie &#380;&#261;dania anulowania</P>
+<P STYLE="margin-bottom: 0in">	- mo&#380;na okre&#347;li&#263; w
+parametrach w&#261;tku, czy w&#261;tek jest podatny na anulowanie</P>
+<P STYLE="margin-bottom: 0in"><SPAN STYLE="background: #ffffff"><B>pthread_yield</B>()</SPAN></P>
+<P STYLE="margin-bottom: 0in"><SPAN STYLE="background: #ffffff">	-
+wyw&#322;aszczanie w&#261;tku</SPAN></P>
+<P STYLE="margin-bottom: 0in"><SPAN STYLE="background: #ffffff"><B>pthread_kill</B>(pthread_t
+th, int sig)</SPAN></P>
+<P STYLE="margin-bottom: 0in"><SPAN STYLE="background: #ffffff">	-
+wys&#322;anie sygna&#322;u sig do w&#261;tku thread</SPAN></P>
+<P STYLE="margin-bottom: 0in">	- podobnie jak kill nie s&#322;u&#380;y
+jedynie do wysy&#322;ania sygna&#322;u kill</P>
+<P STYLE="margin-bottom: 0in">- w&#261;tek mo&#380;e
+oczekiwa&#263; na sygna&#322; dzi&#281;ki int sigwait(const sigset_t *set, int
+*sig)	//sigset_t - zbi&oacute;r sygna&#322;&oacute;w</P>
+<P STYLE="margin-bottom: 0in"><BR>
+</P>
+<P STYLE="margin-bottom: 0in"><BR>
+</P>
+<BR>
+<P STYLE="margin-bottom: 0in"><FONT COLOR="#1155cc"><U><A HREF="pytania-nonGIFT.txt">pytania :D</A></U></FONT></P>
+<BR>
+<P STYLE="margin-bottom: 0in"><B>Bibliografia</B></P>
+<UL>	
+	<LI><P STYLE="margin-bottom: 0in"><FONT COLOR="#1155cc"><U><A HREF="http://wazniak.mimuw.edu.pl/images/5/5d/Sop_09_lab.pdf">"http://wazniak.mimuw.edu.pl/images/5/5d/Sop_09_lab.pdf"</A></U></FONT></P>
+	<LI><P STYLE="margin-bottom: 0in"><FONT COLOR="#1155cc"><U><A HREF="http://wazniak.mimuw.edu.pl/images/6/6f/Sop_02_wyk_1.0.pdf">"http://wazniak.mimuw.edu.pl/images/6/6f/Sop_02_wyk_1.0.pdf"</A></U></FONT></P>
+	<LI><P STYLE="margin-bottom: 0in"><FONT COLOR="#1155cc"><U><A HREF="https://computing.llnl.gov/tutorials/pthreads/">"https://computing.llnl.gov/tutorials/pthreads/"</A></U></FONT></P>
+</UL>
+</BODY>
+</HTML>

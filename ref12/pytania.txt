@@ -1,0 +1,31 @@
+Watki::co zrobic aby moc korzystac z metod pthread_*?{
+	~%-100%kompilowac z opcja -lthreads
+	~%-100%kompilowac z opcja -lpthreads
+	~%50%kompilowac z opcja -pthreads
+	~%50%linkowac z opcja -pthreads
+}
+
+Watki::zgodne z norma POSIX Threads jest:?{
+	~%-100%uzywanie fork
+	~%-100%uzywanie clone
+	~%-100%korzystanie z LinuxThreads
+	~%100%korzystanie z NPTL
+}
+Watki::wg. normy POSIX Threads watki wspoldziela:?{
+	~%25%deskryptory plikow
+	~%25%biezacy katalog
+	~%25%wartosc nice
+	~%25%wykorzystanie procesora
+}
+Watki::wg. normy POSIX Threads watki nie wspoldziela:?{
+	~%100%zmienna errno
+	~%-100%kontrolujacego je terminal
+	~%-100%ograniczenia zasobow
+	~%-100%zamki zalozone dzieki fcntl
+}
+Watki::pthread_attr_t posiada atrybut:?{
+	~%50%detachstate - okreœla czy mo¿na czekaæ na zakoñczenie w¹tku
+	~%50%guardsize - rozmiar (w bajtach) buforu przepe³nienia na koñcu stosu
+	~%-100%stackaddr - adres pocz¹tku STERTY
+	~%-100%stacksize - rozmiar stosu w¹tku (w KILObajtach)
+}

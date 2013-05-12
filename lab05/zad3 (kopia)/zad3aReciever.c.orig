@@ -1,0 +1,52 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <signal.h>
+#include <unistd.h>
+#include <time.h>
+#include <wait.h>
+
+
+int licznik = 0;
+
+void fun1(int x) {
+  printf("Odbieram zadany sygnał...\n");
+  licznik++;
+}
+
+void fun2(int x) {
+  printf("W sumie odebrano sygnalow: %d\n", licznik);
+  exit(0);
+}
+
+int main() {
+  sigset_t set1, set2, empty;
+  struct sigaction sig1, sig2;
+
+  sigfillset(&set1);
+  sigfillset(&set2);
+  sigdelset(&set1, SIGUSR1);
+  sigdelset(&set2, SIGUSR2);
+  sigemptyset(&empty);
+
+  /* SIG 1 */
+  sig1.sa_flags = 0;
+  sig1.sa_handler = fun1;
+  sig1.sa_mask = set1;
+
+  sigaction(SIGUSR1, &sig1, NULL);
+
+  /* SIG 2 */
+  sig2.sa_flags = 0;
+  sig2.sa_handler = fun2;
+  sig2.sa_mask = set2;
+
+  sigaction(SIGUSR2, &sig2, NULL);
+
+  if (sigprocmask(SIG_SETMASK, &empty, NULL) == -1)
+    exit(-1);
+
+  /* Petla nieskonczona */
+
+  while(1);
+  return 0;
+}

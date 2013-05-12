@@ -1,0 +1,30 @@
+co zrobic aby moc korzystac z metod pthread_*:
+	kompilowac z opcja -lthreads
+	kompilowac z opcja -lpthreads
+	kompilowac z opcja -pthreads
+	linkowac z opcja -pthreads
+
+zgodne z norma POSIX Threads jest:
+	uzywanie fork
+	uzywanie clone
+	korzystanie z LinuxThreads
+	korzystanie z NPTL
+
+wg. normy POSIX Threads watki wspoldziela:
+	deskryptory plikow
+	biezacy katalog
+	wartosc nice
+	wykorzystanie procesora
+
+wg. normy POSIX Threads watki nie wspoldziela:
+	zmienna errno
+	kontrolujacego je terminal
+	ograniczenia zasobow
+	zamki zalozone dzieki fcntl
+
+pthread_attr_t posiada atrybut
+	detachstate - okreœla czy mo¿na czekaæ na zakoñczenie w¹tku
+	guardsize - rozmiar (w bajtach) buforu przepe³nienia na koñcu stosu
+	stackaddr - adres pocz¹tku stosu
+	stacksize - rozmiar stosu w¹tku (w KILObajtach)
+
