@@ -14,13 +14,16 @@
 
 int flag;
 void wait_for_nack(int i){
-    //printf("<%d>",i);
     flag=1;
 }
 
 void wait_for_ack(int i){
-    //printf("<%d>",i);
     flag=2;
+}
+
+int ender=1;
+void breakloop(int i){
+    ender=0;
 }
 
 int main(int argc, char * argv[]){
@@ -30,11 +33,17 @@ int main(int argc, char * argv[]){
         printf("podaj nazwe klienta\n");
         return 1;
     }
-    /** nazwa kolejki servera jest arbitralna, lokalizacja binarki klienta taka, jak servera */
+
     mqd_t queue_id = createQueue(QUEUENAME,sizeof(message));
+    if(queue_id<0){
+        printf("SERVER not opened\n");
+        perror(NULL);
+        exit(1);
+    }
     printf("opended server id:%d\n",queue_id);
-    /** otwieramy kolejki utworzone przez serwer - wiemy jakie sa ich nazwy */
-    while(1){
+
+    signal(SIGINT,breakloop);
+    while(ender){
         /** wysylamy nasza wiadomosc */
         printf("any key to send message\n");
         getchar();
@@ -50,13 +59,13 @@ int main(int argc, char * argv[]){
         }
         comm.what[i-1]=0;
         int rc = mq_send(queue_id, (char*)(&comm), sizeof(comm) , 0);
-        perror(NULL);
         if (rc < 0) {
-            printf("message not send, msgsnd errno: %d\n", rc);
+            printf("message not send");
+            perror(NULL);
             return 1;
         } else {
             flag=0;
-            while(!flag){};
+            while(!flag){sleep(1);};
             if(flag==1){
                 printf("ALREADY FULLL\n");
             }else{
@@ -64,4 +73,5 @@ int main(int argc, char * argv[]){
             }
         }
     }
+    return 0;
 }

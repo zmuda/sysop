@@ -41,13 +41,13 @@ void closeQueue(char* name,int queue_id){
 /**
 * zestaw funkcji porzadkujacych
 */
-void clean1(){
+void cleanup(){
     closeQueue("tmp/servers.rip",queue_id);
     fclose(out);
 }
-void clean2(int i){
-    clean1();
-    exit(0);
+int flag=1;
+void breakloop(int i){
+    flag=0;
 }
 int persist_it(message msg){
     time_t t;
@@ -62,15 +62,24 @@ int persist_it(message msg){
 }
 
 int main(int argc, char** argv){
-    limit=100;
+    if(argc<2){
+        printf("usage: [file length limit in characters]");
+        return 1;
+    }
+    limit=atoi(argv[1]);
     out=fopen("tmp/LOG.log","w");
     /** otwieramy arbitralnie zadana kolejke */
     queue_id = createQueue("tmp/servers.rip");
+    if(queue_id<0){
+        printf("SERVER not created\n");
+        perror(NULL);
+        exit(1);
+    }
+    printf("SERVER %s at %d\n","tmp/servers.rip",queue_id);
     /** czyszczeniw na wyjsciu */
-    atexit(clean1);
-    //signal(SIGINT,clean2);
+    signal(SIGINT,breakloop);
     int rc;
-    while(1){
+    while(flag){
         message buff;
         sleep(1);
         /** odbior komunikatu nt. pojawienia sie klienta
@@ -92,6 +101,6 @@ int main(int argc, char** argv){
         }
 
     }
-
+    cleanup();
     return 0;
 }

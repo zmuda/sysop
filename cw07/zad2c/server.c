@@ -17,8 +17,6 @@
 mqd_t queue_id;
 int limit;
 int out;
-char** files;
-mqd_t* ids;
 int ids_size=0;
 
 /**
@@ -32,20 +30,12 @@ void closeQueue(char* name,mqd_t queue_id){
 /**
 * zestaw funkcji porzadkujacych
 */
-void clean1(){
+void cleanup(){
     closeQueue(QUEUENAME,queue_id);
 }
-void clean2(int i){
-    clean1();
-    exit(0);
-}
-
-mqd_t findit(char* name){
-    int i=0;
-    for(;i<ids_size;i++){
-        if(!strcmp(name,files[i]))return ids[i];
-    }
-    return -1;
+int flag=1;
+void breakloop(int i){
+    flag=0;
 }
 
 char buff[512];
@@ -61,22 +51,34 @@ int persist_it(message msg){
 }
 
 int main(int argc, char** argv){
-    limit=100;
+    if(argc<2){
+        printf("usage: [file length limit in characters]");
+        return 1;
+    }
+    limit=atoi(argv[1]);
+
     /** otwieramy arbitralnie zadana kolejke */
     mqd_t queue_id = createQueue(QUEUENAME,sizeof(message));
-    out=open("tmp/LOG.log",O_WRONLY|O_CREAT);
+    if(queue_id<0){
+        printf("SERVER not created\n");
+        perror(NULL);
+        exit(1);
+    }
+    printf("SERVER %s at %d\n",QUEUENAME,queue_id);
+    out=open("tmp/LOG.log",O_WRONLY|O_CREAT,S_IRUSR | S_IWUSR|S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH);
+    if(out<0){
+        printf("LOG not created\n");
+        perror(NULL);
+        exit(1);
+    }
 
-    /** nibymapa */
-    files=malloc(LIMIT*sizeof(char*));
-    ids=malloc(LIMIT*sizeof(mqd_t));
     ids_size=0;
-
-    /** czyszczeniw na wyjsciu */
-    atexit(clean1);
+    signal(SIGINT,breakloop);
     int rc;
-    while(1){
+    while(flag){
         /** odbior komunikatu nt. pojawienia sie klienta
         *   nie czekamy, musimy jeszcze obslugiwac transfer wiadomosci
+        *   klienta notyfikujemy przez sygnal - jego rodzaj oznacza sukces/porazka
         */
         message msg;
         rc = mq_receive(queue_id, (char*)(&msg), sizeof(msg), NULL);
@@ -86,9 +88,9 @@ int main(int argc, char** argv){
             if(!ok)printf("BUT NOT SAVED\n");
             printf("pid: %d\n",msg.pid);
             if(ok)kill(msg.pid,SIGUSR1);else kill(msg.pid,SIGUSR2);
-            //pause();
             printf("LIMIT=%d\n",limit);
         }
     }
+    cleanup();
     return 0;
 }

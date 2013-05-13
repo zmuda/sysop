@@ -44,7 +44,7 @@ void closeQueue(char* name,int queue_id){
 /**
 * zestaw funkcji porzadkujacych
 */
-void clean1(){
+void cleanup(){
     closeQueue("tmp/servers.rip",queue_id);
     int i;
     for(i=0; i<ids_size;i++){
@@ -54,9 +54,12 @@ void clean1(){
     free(ids);
     free(files);
 }
-void clean2(int i){
-    clean1();
-    exit(0);
+/**
+* glowna petle (czyli program) konczy sie ctrl+c
+*/
+int flag =1;
+void breakloop(int i){
+    flag=0;
 }
 
 /**
@@ -77,11 +80,15 @@ int main(int argc, char** argv){
     files=malloc(LIMIT*sizeof(char*));
     /** otwieramy arbitralnie zadana kolejke */
     queue_id = createQueue("tmp/servers.rip");
-    /** czyszczeniw na wyjsciu */
-    atexit(clean1);
-    //signal(SIGINT,clean2);
+    if(queue_id<0){
+        printf("SERVER not created\n");
+        perror(NULL);
+        exit(1);
+    }
+    printf("SERVER %s at %d\n","tmp/servers.rip",queue_id);
     int rc;
-    while(1){
+    signal(SIGINT,breakloop);
+    while(flag){
         text buff;
         sleep(1);
         /** odbior komunikatu nt. pojawienia sie klienta
@@ -93,6 +100,11 @@ int main(int argc, char** argv){
             /** nowy klieny - tworzymy mu kolejke */
             sprintf(newbuff,"tmp/%s.rip",buff.text);
             int created_id = createQueue(newbuff);
+            if(created_id<0){
+                printf("queue not opened\n");
+                perror(NULL);
+                exit(1);
+            }
             printf("logging %s at %s as %d\n",buff.text,newbuff,created_id);
             /** 'pakujemy' id kolejki w opakowanie dla wiadomosci w kolejce
             *   ustalimy typ - umozliwienie transmisji dwukerunkowej
@@ -139,6 +151,7 @@ int main(int argc, char** argv){
         }
 
     }
-
+    printf("\nCleaning up\n");
+    cleanup();
     return 0;
 }

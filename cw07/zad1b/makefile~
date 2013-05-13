@@ -2,12 +2,15 @@ CC=gcc
 CFLAGS=-Wall
 
 all: client.out server.out
+	sudo rm -rf /dev/mqueue
+	sudo mkdir /dev/mqueue
+	sudo mount -t mqueue none /dev/mqueue
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@ -lrt
 
 %.out: %.o
-	$(CC) $(CFLAGS) $< -o $@
+	$(CC) $(CFLAGS) $< -o $@ -lrt
 
 clean:
 	rm -rf *.out

@@ -11,13 +11,11 @@
 #include "defs.h"
 
 
-int pid;
-/** funkcje porzadkujace */
-void clean1(){
-    kill(pid,SIGKILL);
+void cleanup(){
 }
-void clean2(int i){
-    kill(pid,SIGKILL);
+int ender=1;
+void breakloop(int i){
+    ender=0;
 }
 
 int main(int argc, char * argv[]){
@@ -25,11 +23,14 @@ int main(int argc, char * argv[]){
         printf("podaj nazwe klienta\n");
         return 1;
     }
-    /** nazwa kolejki servera jest arbitralna, lokalizacja binarki klienta taka, jak servera */
     int queue_id = msgget(ftok("tmp/servers.rip",1), 0);
-
-    while(1){
-        /** wysylamy nasza wiadomosc */
+    if(queue_id<0){
+        printf("SERVER not opened\n");
+        perror(NULL);
+        exit(1);
+    }
+    signal(SIGINT,breakloop);
+    while(ender){
         printf("any key to send message\n");
         getchar();
         message comm;
@@ -45,7 +46,8 @@ int main(int argc, char * argv[]){
         comm.mtype=CLIENTS;
         int rc = msgsnd(queue_id, &comm, sizeof(comm), 0);
         if (rc < 0) {
-            printf("message not send, msgsnd errno: %d\n", rc);
+            printf("message not send");
+            perror(NULL);
             return 1;
         } else {
             nack x;
@@ -57,5 +59,6 @@ int main(int argc, char * argv[]){
             }
         }
     }
+    cleanup();
     return 0;
 }

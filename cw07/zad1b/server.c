@@ -48,7 +48,7 @@ mqd_t createQueue(char* name,size_t size){
 /**
 * zestaw funkcji porzadkujacych
 */
-void clean1(){
+void cleanup(){
     closeQueue(QUEUENAME,queue_id);
     int i;
     for(i=0; i<ids_size;i++){
@@ -59,9 +59,12 @@ void clean1(){
     free(idsr);
     free(files);
 }
-void clean2(int i){
-    clean1();
-    exit(0);
+/**
+* glowna petle (czyli program) konczy sie ctrl+c
+*/
+int flag =1;
+void breakloop(int i){
+    flag=0;
 }
 
 /**
@@ -83,12 +86,15 @@ int main(int argc, char** argv){
     files=malloc(LIMIT*sizeof(char*));
     /** otwieramy arbitralnie zadana kolejke */
     queue_id = createQueue(QUEUENAME,sizeof(char)*128);
-    perror(NULL);
-    printf("initialized id:%d\n",queue_id);
-    /** czyszczeniw na wyjsciu */
-    atexit(clean1);
+    if(queue_id<0){
+        printf("SERVER not created\n");
+        perror(NULL);
+        exit(1);
+    }
+    printf("SERVER %s at %d\n",QUEUENAME,queue_id);
+    signal(SIGINT,breakloop);
     int rc;
-    while(1){
+    while(flag){
         sleep(1);
         /** odbior komunikatu nt. pojawienia sie klienta
         *   nie czekamy, musimy jeszcze obslugiwac transfer wiadomosci
@@ -100,10 +106,9 @@ int main(int argc, char** argv){
             /** nowy klieny - tworzymy mu kolejke */
             sprintf(newbuff,"/%s",buff);
             mqd_t created_id = createQueue(newbuff,sizeof(msg));
+            printf("logging %s at %s as %d\n",buff,newbuff,created_id);
             sprintf(newbuff,"/%sr",buff);
             mqd_t created_idr = createQueue(newbuff,sizeof(msg));
-
-            printf("logging %s at %s as %d\n",buff,newbuff,created_id);
             /** 'pakujemy' id kolejki w opakowanie dla wiadomosci w kolejce
             *   ustalimy typ - umozliwienie transmisji dwukerunkowej
             */
@@ -140,5 +145,6 @@ int main(int argc, char** argv){
             }
         }
     }
+    cleanup();
     return 0;
 }

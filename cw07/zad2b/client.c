@@ -12,13 +12,12 @@
 #include <mqueue.h>
 #include "defs.h"
 
-int pid;
-/** funkcje porzadkujace */
-void clean1(){
-    kill(pid,SIGKILL);
+void cleanup(){
 }
-void clean2(int i){
-    kill(pid,SIGKILL);
+
+int ender=1;
+void breakloop(int i){
+    ender=0;
 }
 
 int main(int argc, char * argv[]){
@@ -26,16 +25,24 @@ int main(int argc, char * argv[]){
         printf("podaj nazwe klienta\n");
         return 1;
     }
-    /** nazwa kolejki servera jest arbitralna, lokalizacja binarki klienta taka, jak servera */
     mqd_t queue_id = createQueue(QUEUENAME,sizeof(message));
     printf("opended server id:%d\n",queue_id);
+    if(queue_id<0){
+        printf("SERVER not opened\n");
+        perror(NULL);
+        exit(1);
+    }
     char buff[128];
     sprintf(buff,"/%s",argv[1]);
     mqd_t id = createQueue(buff,sizeof(nack));
-    perror(NULL);
-    /** otwieramy kolejki utworzone przez serwer - wiemy jakie sa ich nazwy */
+    if(id<0){
+        printf("queue not opened\n");
+        perror(NULL);
+        exit(1);
+    }
 
-    while(1){
+    signal(SIGINT,breakloop);
+    while(ender){
         /** wysylamy nasza wiadomosc */
         printf("any key to send message\n");
         getchar();
@@ -51,7 +58,8 @@ int main(int argc, char * argv[]){
         comm.what[i-1]=0;
         int rc = mq_send(queue_id, (char*)(&comm), sizeof(comm) , 0);
         if (rc < 0) {
-            printf("message not send, msgsnd errno: %d\n", rc);
+            printf("message not send");
+            perror(NULL);
             return 1;
         } else {
             nack x;
@@ -64,4 +72,6 @@ int main(int argc, char * argv[]){
             }
         }
     }
+    cleanup();
+    return 0;
 }

@@ -21,7 +21,7 @@ mqd_t createQueue(char* name,size_t size){
     attr.mq_maxmsg = QUEUESIZE;
     attr.mq_msgsize = size;
     attr.mq_flags = 0;
-    mqd_t queue_id = mq_open (name, O_RDWR | O_CREAT , 0664, &attr);
+    mqd_t queue_id = mq_open (name, O_RDWR | O_CREAT, 0666, &attr);
     if(queue_id<0)perror(NULL);
 	return queue_id;
 }

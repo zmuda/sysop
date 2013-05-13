@@ -31,11 +31,12 @@ mqd_t createQueue(char* name,size_t size){
 
 int pid;
 /** funkcje porzadkujace */
-void clean1(){
-    kill(pid,SIGKILL);
+void cleanup(){
+    kill(pid,SIGINT);
 }
-void clean2(int i){
-    kill(pid,SIGKILL);
+int ender=1;
+void breakloop(int i){
+    ender=0;
 }
 
 int main(int argc, char * argv[]){
@@ -44,14 +45,12 @@ int main(int argc, char * argv[]){
         return 1;
     }
     /** nazwa kolejki servera jest arbitralna, lokalizacja binarki klienta taka, jak servera */
-    /*
-    struct mq_attr attr;
-    attr.mq_maxmsg = QUEUESIZE;
-    attr.mq_msgsize = sizeof(char)*128;
-    attr.mq_flags = 0;
-    mqd_t queue_id = mq_open (QUEUENAME, O_WRONLY, 0664, &attr);
-    */
     mqd_t queue_id = createQueue(QUEUENAME,sizeof(char)*128);
+    if(queue_id<0){
+        printf("SERVER not opened\n");
+        perror(NULL);
+        exit(1);
+    }
     printf("opended server id:%d\n",queue_id);
     /** wysylamy nasza nazwe */
     char name[128];
@@ -59,8 +58,9 @@ int main(int argc, char * argv[]){
     int rc = mq_send(queue_id, name, sizeof(char)*128, 0);
     sleep(1);
     if (rc < 0) {
-        printf("name not send to %d, msgsnd errno: %d\n", queue_id,rc);
-        return 1;
+            printf("message not send");
+            perror(NULL);
+            return 1;
     }
     /** otwieramy kolejki utworzone przez serwer - wiemy jakie sa ich nazwy */
     message msg;
@@ -68,17 +68,31 @@ int main(int argc, char * argv[]){
     char buff2[128];
     sprintf(buff2,"/%s",argv[1]);
     mqd_t id = createQueue(buff2,sizeof(msg)); // do tej piszemy
+    if(id<0){
+        printf("queue not opened\n");
+        perror(NULL);
+        exit(1);
+    }
+
+    if(id<0){
+        printf("write queue not opened\n");
+        perror(NULL);
+        exit(1);
+    }
     sprintf(buff2,"/%sr",argv[1]);
     mqd_t idrdonly = createQueue(buff2,sizeof(msg)); //z tej tylko czytamy
-
+    if(idrdonly<0){
+        printf("read queue not opened\n");
+        perror(NULL);
+        exit(1);
+    }
     printf("logged as %s\tid:%d\n", argv[1],id);
 
     /** mamy drugi proces na obsluge przychodzacych wiadomosci */
     pid = fork();
-    atexit(clean1);
-    signal(SIGINT,clean2);
     if(!pid){
-        while(1){
+        signal(SIGINT,breakloop);
+        while(ender){
             /** pakujemy tresc do struktury z data, adreatem, typem(dla obslugi kolejki) */
             fgets(msg.to, sizeof(msg.to), stdin);
             fgets(msg.what, sizeof(msg.what), stdin);
@@ -88,14 +102,17 @@ int main(int argc, char * argv[]){
                 printf("message not send, msgsnd errno: %d\n", rc);
             }
         }
+        exit(0);
     }
     /** sami tylko odberamy wiadomosci */
-    while(1){
+    signal(SIGINT,breakloop);
+    while(ender){
         sleep(1);
         rc = mq_receive(id, (char*)(&reply), sizeof(reply), NULL);
         if(rc>0){
             printf("\n\a\tFROM: %s\tWHEN: %s\t%s",reply.to,ctime(&reply.when),reply.what);
         }
     }
+    cleanup();
     return 0;
 }
