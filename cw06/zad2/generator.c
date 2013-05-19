@@ -9,7 +9,7 @@ void set(long num){
     int fd = open("lock", O_RDWR | O_CREAT, 0666);
     flock(fd,LOCK_EX);
     char buff[32];
-    snprintf(buff, 10,"0%d\n",num);
+    snprintf(buff, 10,"0%ld\n",num);
     write(fd,buff,sizeof(buff));
     close(fd);
     flock(fd,LOCK_UN);

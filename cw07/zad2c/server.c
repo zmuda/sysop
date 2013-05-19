@@ -24,8 +24,9 @@ int ids_size=0;
 */
 void closeQueue(char* name,mqd_t queue_id){
     mq_close(queue_id);
-	unlink(name);
+    mq_unlink(name);
 }
+
 
 /**
 * zestaw funkcji porzadkujacych

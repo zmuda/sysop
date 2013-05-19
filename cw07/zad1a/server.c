@@ -133,7 +133,7 @@ int main(int argc, char** argv){
                 msg.mtype=SERVERS;
                 /** szukamy adresata */
                 int to = find_id( msg.to);
-                printf("<%d>",to);
+                //printf("<%d>",to);
                 if(to>-1){
                     /** msg.to staje sie nazwa tego, ktory wyslal */
                     sprintf(msg.to,"%s",files[i]);

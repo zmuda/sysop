@@ -10,7 +10,7 @@ long nonzerobytescount(char* name){
     if(file<0)return file;
     int res=1;
     char byte;
-    long unsigned ret =0;
+    long ret =0;
     while(res){
         res = read(file,&byte,sizeof(char));
         if(byte)ret++;
@@ -20,9 +20,13 @@ long nonzerobytescount(char* name){
 
 
 int main (int argc, char **argv){
-    if(argc<2)return 1;
+    if(argc<2){
+        printf("usage: [fifio file name]");
+        return 1;
+    }
     char * path = argv[1];
     if(!mkfifo(path, 0660)){
+        printf("mkfifo failed\n");
         exit(2);
     }
     int fifo = open(path,O_RDONLY|O_NONBLOCK);

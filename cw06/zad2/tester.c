@@ -81,13 +81,13 @@ void aqquire(){
     int fd = open("lock",O_RDWR);
     flock(fd,LOCK_EX);
     char buff[32];
-    read(fd,buff,sizeof(buff));
+    if(read(fd,buff,sizeof(buff)));
     long num = atoi(buff);
     if(!num)exit(98);
     num--;
     lseek(fd,0,SEEK_SET);
-    snprintf(buff, 10,"0%d\n",num);
-    write(fd,buff,sizeof(buff));
+    snprintf(buff, 10,"0%ld\n",num);
+    if(write(fd,buff,sizeof(buff)));
     close(fd);
     flock(fd,LOCK_UN);
 }
@@ -95,12 +95,12 @@ void release(){
     int fd = open("lock",O_RDWR);
     flock(fd,LOCK_EX);
     char buff[32];
-    read(fd,buff,sizeof(buff));
+    if(read(fd,buff,sizeof(buff)));
     long num = atoi(buff);
     num++;
     lseek(fd,0,SEEK_SET);
-    snprintf(buff, 10,"%d\n",num);
-    write(fd,buff,sizeof(buff));
+    snprintf(buff, 10,"%ld\n",num);
+    if(write(fd,buff,sizeof(buff)));
     close(fd);
     flock(fd,LOCK_UN);
 }
@@ -117,11 +117,14 @@ int main (int argc, char **argv){
     while(1){
         r=read(fifo,buff,sizeof(buff));
         if(!r){
+            printf("pausing\n");
             sleep(1);
         }
+        #ifdef VERBOSE
         long num = atoi(buff);
         printf("%ld is prime: %d\n",num,IsPrime(num));
-        sleep(2);
+        #endif
+        //sleep(2);
     }
     release();
     return 0;

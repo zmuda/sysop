@@ -10,6 +10,9 @@ generator: generator.c
 tester: tester.c
 	$(CC) $(CFLAGS) -O1 $@.c -o $@.out
 
+testerVerbose: tester.c
+	$(CC) $(CFLAGS) -D VERBOSE -O1 $@.c -o $@.out
+
 clean:
 	rm -rf *.out
 	rm -rf *.o
