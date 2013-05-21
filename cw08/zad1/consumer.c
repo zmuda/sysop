@@ -68,7 +68,7 @@ void consume(int freshly_created ){
 	int counter;
 
 	while(1){
-        /** zmniejszamy ilosc wolnego miejsca **/
+        /** zmniejszamy ilosc dostepnych produktow **/
 		semaphore_attributes.sem_num = FULL_SEM;
 		semaphore_attributes.sem_op = ZMNIEJSZ;
 		CLEANING_HANDLER(semop(semaphores_set, &semaphore_attributes, 1) == -1)
@@ -90,7 +90,7 @@ void consume(int freshly_created ){
 		semaphore_attributes.sem_op = ZWIEKSZ;
 		CLEANING_HANDLER(semop(semaphores_set, &semaphore_attributes, 1) == -1)
 
-        /** zwiekszamy ilosc istniejacych elem **/
+        /** zwiekszamy ilosc idostepnego miejsca **/
 		semaphore_attributes.sem_num = EMPTY_SEM;
 		CLEANING_HANDLER(semop(semaphores_set, &semaphore_attributes, 1) == -1)
 	}
