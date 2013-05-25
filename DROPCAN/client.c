@@ -47,23 +47,37 @@ void semaphore_from_hash_disposal(const char* hash){
     flatten(buff);
     char buff2[256];
     sprintf(buff2,"/%s___",buff);
-    HANDLER(sem_unlink(buff2) == -1)
+    sem_unlink(buff2);
 }
-
+void trypost_semaphore(const char* hash);
+int try_semaphore(const char* hash);
 void clean(int a){
     int i = *tab_i;
-	while(i--){
-        semaphore_from_hash_disposal(tab[i].relative_name);
+    while(i--){
+        trypost_semaphore(tab[i].relative_name);
 	}
-	HANDLER(munmap(memory, MAXTAB*sizeof(node)+4*sizeof(int)) == -1)
-	HANDLER(shm_unlink("/shared") == -1)
-	HANDLER(sem_close(counter_semaphore) == -1)
-	HANDLER(sem_close(fifo_semaphore) == -1)
-	HANDLER(sem_unlink("/readers_counter") == -1)
-	HANDLER(sem_unlink("/consistency") == -1)
-	HANDLER(sem_unlink("/fifos") == -1)
-	HANDLER(close(fifo) == -1)
-	remove(FPATH);
+    sem_trywait(fifo_semaphore);
+    sem_post(fifo_semaphore);
+    sem_trywait(counter_semaphore);
+    sem_post(counter_semaphore);
+
+    //zakomentowano niepożądane likwidacje
+    //int i = *tab_i;
+	while(i--){
+	    if(!try_semaphore(tab[i].relative_name)){
+            semaphore_from_hash_disposal(tab[i].relative_name);
+	    }
+	}
+	//munmap(memory, MAXTAB*sizeof(node)+4*sizeof(int));
+	//shm_unlink("/shared");
+	//sem_close(counter_semaphore);
+	//sem_close(fifo_semaphore);
+	//sem_unlink("/readers_counter");
+	//sem_unlink("/consistency");
+	//sem_unlink("/fifos");
+	//close(fifo);
+	//remove(FPATH);
+	exit(0);
 }
 
 sem_t* createSemafor(char* path, int* freshly_created){
@@ -129,7 +143,7 @@ void prepare_path(const char* fpath){
         if(pos){
             pos[0]=0;
             sprintf(command,"mkdir -p \"%s/.commited/%s\"",server_path,name);
-            pclose(popen(command,"r"));
+            system(command);
         }
 }
 void prepar_clients_path(const char* buff2){
@@ -140,17 +154,17 @@ void prepar_clients_path(const char* buff2){
     if(pos){
         pos[0]=0;
         sprintf(command,"mkdir -p \"%s/%s\"",client_path,name);
-        pclose(popen(command,"r"));
+        system(command);
     }
 }
 void update_stamp(const char* shorten,time_t mtime){
     char buff2[256];
     sprintf(buff2,"rm -rf \"%s/...%s.*\"",client_path,shorten);
-    pclose(popen(buff2,"r"));
+    system(buff2);
     sprintf(buff2,"...%s.%ld",shorten,mtime);
     prepar_clients_path(buff2);
     sprintf(buff2,"touch \"%s/...%s.%ld\"",client_path,shorten,mtime);
-    pclose(popen(buff2,"r"));
+    system(buff2);
 }
 void add_file(const char *fname){
     /** bedziemy zmieniac - blokujemy plik az do potwierdzenia przez server **/
@@ -159,7 +173,7 @@ void add_file(const char *fname){
     char command[256];
     prepare_path(fname);
     sprintf(command,"cp -p \"%s/%s\" \"%s/.commited/%s\"",client_path,fname,server_path,fname);
-    pclose(popen(command,"r"));
+    system(command);
 }
 void update_file(node* found){
     char command[256];
@@ -177,7 +191,7 @@ void update_file(node* found){
         printf("updated\t=> %s %ld %ld\n",found->relative_name,found->modified,sb.st_mtime);
         prepare_path(found->relative_name);
         sprintf(command,"cp -p \"%s/%s\" \"%s/.commited/%s\"",client_path,found->relative_name,server_path,found->relative_name);
-        pclose(popen(command,"r"));
+        system(command);
         /** zapisujemy timestamp **/
         update_stamp(found->relative_name,found->modified);
     }
@@ -231,7 +245,7 @@ int fetch_file(const char *fpath, const struct stat *sb,int typeflag){
         /** bedziemy zmieniac - blokujemy plik az do potwierdzenia przez server **/
         if(stat(buff,&native)<0)return 0;
         sprintf(command,"rm \"%s\"",buff);
-        pclose(popen(command,"r"));
+        system(command);
         printf("REMOTE deleted:\t%s\n",buff);
         return 0;
     }
@@ -242,7 +256,7 @@ int fetch_file(const char *fpath, const struct stat *sb,int typeflag){
         sprintf(command,"cp -p \"%s\" \"%s\"",fpath,buff);
         prepar_clients_path(shorten);
         printf("REMOTE changed:\t%s\n",shorten);
-        pclose(popen(command,"r"));
+        system(command);
         update_stamp(shorten,sb->st_mtime);
     }
     return 0;
@@ -325,9 +339,9 @@ int present(const char *fpath, const struct stat *sb,int typeflag){
 }
 
 int main(int argc, char* argv[]){
-    if(argc<0){
+    if(argc<2){
         printf("usage: [path to storage folder]");
-        _exit(0);
+        return 1;
     }
 
 	int freshly_created = 1;
@@ -338,7 +352,7 @@ int main(int argc, char* argv[]){
 		HANDLER(errno != EEXIST)
 	}
 	HANDLER((fifo = open(FPATH, O_RDWR | O_NONBLOCK)) == -1)
-    /** semafory - na kolejke i na licznik; gotowosci servera */
+	/** semafory - na kolejke i na licznik; gotowosci servera */
 	counter_semaphore = createSemafor("/readers_counter", &freshly_created);
 	fifo_semaphore = createSemafor("/fifos", &freshly_created);
     consistent_semaphore = createSemafor("/consistency", &freshly_created);
@@ -366,7 +380,8 @@ int main(int argc, char* argv[]){
         if(*consistent)break;
         CLEANING_HANDLER(sem_post(consistent_semaphore) == -1)
     }
-    CLEANING_HANDLER(sem_post(consistent_semaphore) == -1)
+
+	CLEANING_HANDLER(sem_post(consistent_semaphore) == -1)
     if(freshly_created)*tab_i=0;
 
     client_path=malloc(256*sizeof(char));
@@ -406,7 +421,7 @@ int main(int argc, char* argv[]){
                 /** wersje przywracamy przezu utworzenie nowego pliku **/
                 sprintf(command,"cp \"%s\" \"%s/%s\"",path,client_path,buff);
                 //printf("-|-\t%s\t-|-\n",command);
-                pclose(popen(command,"r"));
+                system(command);
             } else printf("not reckognized\n");
             release_semaphore(tmp);
             CLEANING_HANDLER(sem_post(consistent_semaphore) == -1)

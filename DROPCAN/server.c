@@ -43,7 +43,7 @@ void semaphore_from_hash_disposal(const char* hash){
     char buff2[256];
     sprintf(buff2,"/%s___",buff);
     //printf("DISP %s\n",buff2);
-    HANDLER(sem_unlink(buff2) == -1)
+    sem_unlink(buff2);
 }
 
 void prepare_path(const char* fpath){
@@ -56,7 +56,7 @@ void prepare_path(const char* fpath){
             pos[0]=0;
             //printf("[%s]",name);
             sprintf(command,"mkdir -p \"%s/%s\"",server_path,name);
-            pclose(popen(command,"r"));
+            system(command);
         }
 }
 
@@ -68,15 +68,16 @@ void clean(int a){
 	while(i--){
         semaphore_from_hash_disposal(tab[i].relative_name);
 	}
-	HANDLER(munmap(memory, MAXTAB*sizeof(node)+4*sizeof(int)) == -1)
-	HANDLER(shm_unlink("/shared") == -1)
-	HANDLER(sem_close(counter_semaphore) == -1)
-	HANDLER(sem_close(fifo_semaphore) == -1)
-	HANDLER(sem_unlink("/readers_counter") == -1)
-	HANDLER(sem_unlink("/consistency") == -1)
-	HANDLER(sem_unlink("/fifos") == -1)
-	HANDLER(close(fifo) == -1)
+	munmap(memory, MAXTAB*sizeof(node)+4*sizeof(int));
+	shm_unlink("/shared");
+	sem_close(counter_semaphore);
+	sem_close(fifo_semaphore);
+	sem_unlink("/readers_counter");
+	sem_unlink("/consistency");
+	sem_unlink("/fifos");
+	close(fifo);
 	remove(FPATH);
+	exit(0);
 }
 
 sem_t* createSemafor(char* path, int* freshly_created){
@@ -136,18 +137,18 @@ void add_file(const char *fname){
     char commited[256];
     strcpy(commited,buff);
     sprintf(command,"mkdir -p \"%s/.%s\"",server_path,fname);
-    pclose(popen(command,"r"));
+    system(command);
     sprintf(command,"cp -p \"%s\" \"%s/.%s/%.0f\"",buff,server_path,fname,hack);
-    pclose(popen(command,"r"));
+    system(command);
     tab[*tab_i].modified=sb.st_mtime;
     tab[*tab_i].active=1;
     strcpy(tab[*tab_i].relative_name,fname);
     *tab_i+=1;
     sprintf(command,"rm \"%s\"",commited);
-    pclose(popen(command,"r"));
+    system(command);
     prepare_path(fname);
     sprintf(command,"ln -f \"%s/.%s/%.0f\" \"%s/%s\"",server_path,fname,hack,server_path,fname);
-    pclose(popen(command,"r"));
+    system(command);
 }
 /** tu nie zakladam semaforow na konkretne pliki - i tak mam pelna kontrole
     serwer jest jedynym pisarzem **/
@@ -162,14 +163,14 @@ void update_file(node* found){
     char commited[256];
     strcpy(commited,buff);
     sprintf(command,"cp -p '%s' '%s/.%s/%.0f'",buff,server_path,found->relative_name,hack);
-    pclose(popen(command,"r"));
+    system(command);
     found->modified=sb.st_mtime;
     found->active=1;
     sprintf(command,"rm '%s'",commited);
-    pclose(popen(command,"r"));
+    system(command);
     prepare_path(found->relative_name);
     sprintf(command,"ln -f \"%s/.%s/%.0f\" \"%s/%s\"",server_path,found->relative_name,hack,server_path,found->relative_name);
-    pclose(popen(command,"r"));
+    system(command);
 }
 int commit_file(const char *fpath, const struct stat *sb,int typeflag){
     if(typeflag!=FTW_F)return 0;
@@ -252,6 +253,18 @@ void WRITE(int freshly_created){
 				/** odlokowujemy licznik - czytelnicy moga sie znow dodawac */
 				CLEANING_HANDLER(sem_post(counter_semaphore) == -1)
 			}else{
+			    /** nieistniejace juz procesy **/
+			    int tmp;
+			    if(kill(*operating_next_pid,0)){
+                    if(read(fifo, &tmp, sizeof(int)) == -1){
+                        if(errno == EAGAIN){
+                            *operating_next_pid = 0;
+                        }
+                        CLEANING_HANDLER(errno!=EAGAIN)
+                    }else{
+                        *operating_next_pid = tmp;
+                    }
+			    }
 			    /** jezeli nie nasza kole, zwalniamy i przechodzimy dalej */
 				CLEANING_HANDLER(sem_post(fifo_semaphore) == -1)
 			}
@@ -263,9 +276,9 @@ void WRITE(int freshly_created){
 
 
 int main(int argc, char* argv[]){
-    if(argc<0){
+    if(argc<2){
         printf("usage: [path to servers storage folder]");
-        _exit(0);
+        return 1;
     }
 
 	int freshly_created = 1;
@@ -294,10 +307,7 @@ int main(int argc, char* argv[]){
     server_path = memory+4*sizeof(int);
     tab_i = memory+3*sizeof(int);
     consistent = memory+2*sizeof(int);
-    /** wczytujemy stan sprzed wylaczenia **/
 
-    //struct stat sb;
-    //if((stat("DUMP.CONF",&sb)<0))
     {
         *consistent = 1;
         *tab_i = 0;
@@ -306,15 +316,8 @@ int main(int argc, char* argv[]){
         /** gdyby nie bylo miejsca **/
         char tmp[256];
         sprintf(tmp,"mkdir -p \"%s/.commited/\"",server_path);
-        printf("%s\n",tmp);
-        pclose(popen(tmp,"r"));
+        system(tmp);
     }
-    /*else{
-        int fd = open("DUMP.CONF",O_CREAT|O_WRONLY,S_IRWXU);
-        read(fd,memory,MAXTAB*sizeof(node)+4*sizeof(int)+sizeof(char)*256);
-        close(fd);
-    }*/
-
 
 	WRITE(freshly_created);
 
