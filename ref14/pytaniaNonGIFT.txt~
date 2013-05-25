@@ -1,0 +1,36 @@
+Sockety::Transmisja datagramowa:?{
+~%-100%pakiety muszą zostać dostarczone
+~%50%kolejność dostarczenia nie jest gwarantowana
+~%-100%błąd transmisji skutkuje wysłaniem żądania retransmisji
+~%50%rozmiary pakietów mają ustalony rozmiar
+}
+
+Sockety::Przestrzeń nazw:?{
+~%-100%sockety w ramach jednej maszyny mają nazwę opatrzoną numerem portu
+~%50%sockety w ramach wielu maszyn mają nazwę opatrzoną numerem portu
+~%50%sockety w ramach jednej maszyny mają nazwę odpowiadającą nazwie pliku
+~%-100%sockety w ramach jednej maszyny mają nazwę odpowiadającą nazwie istniejącego pliku
+}
+
+Sockety::Które nazwy funkcji są poprawne:?{
+~%-100%send
+~%-100%tie
+~%50%bind
+~%50%accept
+}
+
+Sockety::Protokoły wykorzystywane w socketach:?{
+~%25%lokalny, AF_UNIX
+~%25%lokalny, AF_LOCAL
+~%25%IPv4
+~%25%IPv6
+}
+
+Sockety::Prawda/fałsz:?{
+~%34%domyślnie operacje na socketach są blokujące
+~%-100%operacje na socketach są nieblokujące po wykorzystaniu opcji O_NONBLOCK
+~%33%operacje na socketach są nieblokujące po wykorzystaniu opcji SOCK_NONBLOCK
+~%33%SOCK_CLOEXEC i SOCK_NONBLOCK sumuje się logicznie z argumentem typu komunikacji
+}
+
+

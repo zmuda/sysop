@@ -1,0 +1,34 @@
+Sockety::Transmisja datagramowa:
+	pakiety muszą zostać dostarczone
+	kolejność dostarczenia nie jest gwarantowana
+	błąd transmisji skutkuje wysłaniem żądania retransmisji
+	rozmiary pakietów mają ustalony rozmiar
+
+Sockety::Przestrzeń nazw:
+	sockety w ramach jednej maszyny mają nazwę opatrzoną numerem portu
+	sockety w ramach wielu maszyn mają nazwę opatrzoną numerem portu
+	sockety w ramach jednej maszyny mają nazwę odpowiadającą nazwie pliku
+	sockety w ramach jednej maszyny mają nazwę odpowiadającą nazwie istniejącego pliku
+
+
+Sockety::Które nazwy funkcji są poprawne:
+	send
+	tie
+	bind
+	accept
+
+
+Sockety::Protokoły wykorzystywane w socketach:
+	lokalny, AF_UNIX
+	lokalny, AF_LOCAL
+	IPv4
+	IPv6
+
+
+Sockety::Prawda/fałsz:
+	domyślnie operacje na socketach są blokujące
+	operacje na socketach są nieblokujące po wykorzystaniu opcji O_NONBLOCK
+	operacje na socketach są nieblokujące po wykorzystaniu opcji SOCK_NONBLOCK
+	SOCK_CLOEXEC i SOCK_NONBLOCK sumuje się logicznie z argumentem typu komunikacji
+
+

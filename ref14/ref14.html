@@ -1,0 +1,387 @@
+<html>
+	<head>
+		<title></title>
+	</head>
+	<body>
+		<ol>
+			<li>
+				<span style="line-height: 1.231;"><a href="#czym">Czym jest socket?</a></span></li>
+			<li>
+				<span style="line-height: 1.231;"><a href="#typy">Typy komunikacji:</a></span></li>
+			<li>
+				<span style="line-height: 1.231;"><a href="#przestrzen">Przestrzeñ nazw:</a></span></li>
+			<li>
+				<span style="line-height: 1.231;"><a href="#przeglad">Obs³uga - przegl±d:</a></span></li>
+			<li>
+				<span style="line-height: 1.231;"><a href="#programowa">Obs³uga programowa:</a></span></li>
+			<li>
+				<span style="line-height: 1.231;"><a href="#przyklady">Przyk³ady</a></span></li>
+		</ol>
+		<p>
+			<span>&nbsp;</span></p>
+		<p>
+			<span>&nbsp;</span></p>
+		<p>
+			<span>&nbsp;</span></p>
+		<p dir="ltr">
+			<span style="font-size: medium;"><strong>Czym jest socket?</strong></span></p>
+		<p dir="ltr">
+			<span>Socket&rsquo;y s± dwukierunkow± metod± komunikowania siê miêdzy procesami. Mog± to byæ procesy zar&oacute;wno na tej samej jak i na </span><span>r&oacute;¿nych</span><span> maszynach.</span></p>
+		<p dir="ltr">
+			<span>Dane przesy³ane przez sockety dzielone s± na</span><span> pakiety.</span></p>
+		<p>
+			<strong><strong>&nbsp;</strong></strong></p>
+		<p dir="ltr">
+			<strong><span style="font-size: medium;">Typy komunikacji:</span></strong></p>
+		<p dir="ltr">
+			<strong>strumieniowa</strong></p>
+		<ul>
+			<li>
+				<span style="line-height: 1.231;">gwarancja dostarczenia wszystkich pakiet&oacute;w</span></li>
+			<li>
+				<span style="line-height: 1.231;">gwarancja kolejno¶ci dostarczanych pakiet&oacute;w</span></li>
+			<li>
+				<span style="line-height: 1.231;">b³±d transmisji skutkuje wys³aniem ¿±dania retransmisji</span></li>
+			<li>
+				<span style="line-height: 1.231;">skutkuje ustalon± szybko¶ci± transmisji</span></li>
+		</ul>
+		<p dir="ltr">
+			<strong>datagramowa</strong></p>
+		<ul>
+			<li>
+				<span style="line-height: 1.231;">pakiety nie musz± zostaæ dostarczone</span></li>
+			<li>
+				<span style="line-height: 1.231;">kolejno¶æ nie jest gwarantowana</span></li>
+			<li>
+				<span style="line-height: 1.231;">skutkuje szybsz±, zmienn± prêdko¶ci± transmisji</span></li>
+		</ul>
+		<p>
+			<strong><strong>&nbsp;</strong></strong></p>
+		<p dir="ltr">
+			<span style="font-size: medium;"><strong>Przestrzeñ nazw:</strong></span></p>
+		<ul>
+			<li>
+				<span style="line-height: 1.231;"><strong>lokalna</strong> &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</span><span style="line-height: 1.231;">- adresy socket&rsquo;&oacute;w s± zwyk³ymi nazwami plik&oacute;w</span></li>
+			<li>
+				<span style="line-height: 1.231;"><strong>internetowa</strong>&nbsp;</span><span style="line-height: 1.231;">&nbsp; - adres sk³ada siê z adresu internetowego &nbsp;(adresu IP) oraz numeru portu</span></li>
+		</ul>
+		<p>
+			<br />
+			<br />
+			&nbsp;</p>
+		<p dir="ltr">
+			<strong><span style="font-size: medium;">Obs³uga - przegl±d:</span></strong></p>
+		<ul>
+			<li dir="ltr">
+				<p dir="ltr">
+					<span>socket - tworzy nowego soketa, zwraca deskryptor z kt&oacute;rego korzysta siê jak z w przypadku plikow</span></p>
+			</li>
+			<li dir="ltr">
+				<p dir="ltr">
+					<span>close - niszczy soketa, zwalnia zasoby</span></p>
+			</li>
+			<li dir="ltr">
+				<p dir="ltr">
+					<span>connect - ustanawia polaczenie miedzy miêdzy dwoma socketami</span></p>
+			</li>
+			<li dir="ltr">
+				<p dir="ltr">
+					<span>bind - u¿ywane przez serwer, kojarzy socket z lokalnym adresem, tradycyjnie nazywa siê to &quot;nadawaniem nazwy socketowi&quot;</span></p>
+			</li>
+			<li dir="ltr">
+				<p dir="ltr">
+					<span>listen - ustawia serwer w stan oczekiwania, mo¿emy okre¶liæ przy tym rozmiar kolejki jednocze¶nie obs³ugiwanych po³±czeñ, w przypadku wiêkszej liczby serwer odm&oacute;wi po³±czenia</span></p>
+			</li>
+			<li dir="ltr">
+				<p dir="ltr">
+					<span>accept - pobiera pierwsze z kolei ¿±danie po³±czenia, tworzy nowego socketa ju¿ po³±czonego i zwraca jego deskryptor</span></p>
+			</li>
+		</ul>
+		<p>
+			<br />
+			<br />
+			<br />
+			&nbsp;</p>
+		<p dir="ltr">
+			<strong><span style="font-size: medium;">Obs³uga programowa:</span></strong></p>
+		<p dir="ltr">
+			<span>int <strong>socket</strong>(int&nbsp;</span><span>domain</span><span>, int</span><span>type</span><span>, int</span><span>protocol</span><span>);</span></p>
+		<p dir="ltr">
+			<strong style="line-height: 1.231;"><span style="line-height: 1.231;">domain</span></strong></p>
+		<ul>
+			<li>
+				<span style="line-height: 1.231;">domena komunikacji</span></li>
+			<li>
+				<span style="line-height: 1.231;">specyfikuje protok&oacute;³ komunikacji</span></li>
+			<li>
+				<span style="line-height: 1.231;">&lt;sys/socket.h&gt;</span></li>
+		</ul>
+		<ul>
+			<li>
+				<strong><span style="line-height: 1.231;">AF_UNIX, AF_LOCAL &nbsp; &nbsp;&nbsp;</span><span style="line-height: 1.231;">Local communication</span></strong></li>
+			<li>
+				<strong><span style="line-height: 1.231;">AF_INETIPv4 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Internet protocols</span></strong></li>
+			<li>
+				<span style="line-height: 1.231;">AF_INET6IPv6 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Internet protocols</span></li>
+			<li>
+				<span style="line-height: 1.231;">AF_IPXIPX &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Novell protocols</span></li>
+			<li>
+				<span style="line-height: 1.231;">AF_NETLINK &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Kernel user interface device</span></li>
+			<li>
+				<span style="line-height: 1.231;">AF_X25ITU-T &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; X.25 / ISO-8208 protocol</span></li>
+			<li>
+				<span style="line-height: 1.231;">AF_AX25 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Amateur radio AX.25 protocol</span></li>
+			<li>
+				<span style="line-height: 1.231;">AF_ATMPVC &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Access to raw ATM PVCs</span></li>
+			<li>
+				<span style="line-height: 1.231;">AF_APPLETALK &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Appletalk</span></li>
+			<li>
+				<span style="line-height: 1.231;">AF_PACKET &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Low level packet interface</span></li>
+		</ul>
+		<p>
+			<strong><strong>&nbsp;</strong></strong></p>
+		<p dir="ltr">
+			<span><strong>type</strong> - typ komunikacji</span><strong style="line-height: 1.231;"><strong>&nbsp;</strong></strong></p>
+		<ul>
+			<li>
+				<strong><span style="line-height: 1.231;">SOCK_STREAM strumieniowa</span></strong></li>
+			<li>
+				<strong><span style="line-height: 1.231;">SOCK_DGRAM datagramowa</span></strong></li>
+			<li>
+				<span style="line-height: 1.231;">SOCK_SEQPACKET gwarantowana kolejno¶æ, dwukierunkowa, datagramy, ka¿de wywo³anie musi zakoñczyæ siê odczytaniem ca³ego pakietu</span></li>
+			<li>
+				<span style="line-height: 1.231;">SOCK_RAW &ldquo;surowy&rdquo; dostêp do protoko³u</span></li>
+			<li>
+				<span style="line-height: 1.231;">SOCK_RDM datagramowy, gwarantuje odbi&oacute;r ale niekolejno¶æ</span></li>
+			<li>
+				<span style="line-height: 1.231;">SOCK_PACKET przestarza³y</span></li>
+		</ul>
+		<p dir="ltr">
+			<span>mo¿na zsumowaæ logicznie z (specyficzne dla linuxa):</span></p>
+		<ul>
+			<li>
+				<span style="line-height: 1.231;">SOCK_NONBLOCK&nbsp;</span><span style="line-height: 1.231;">zmiana domy¶nego zachowania operacji na socetach na nieblokujace</span></li>
+			<li>
+				<span style="line-height: 1.231;">SOCK_CLOEXEC&nbsp;</span><span style="line-height: 1.231;">zamyka na wyj¶ciu socketl.</span></li>
+		</ul>
+		<p>
+			<strong><strong>&nbsp;</strong></strong></p>
+		<p dir="ltr">
+			<span><strong>protocol</strong></span></p>
+		<ul>
+			<li>
+				<span style="line-height: 1.231;">specyfikuje konkretny protok&oacute;³</span></li>
+			<li>
+				<span style="line-height: 1.231;">najczê¶ciej istnieje jedne mo¿liwy i mo¿na zostawiæ 0</span></li>
+		</ul>
+		<p>
+			<strong><strong>&nbsp;</strong></strong></p>
+		<p dir="ltr">
+			<span>zwraca identyfikator (deskryptor pliku) </span></p>
+		<p dir="ltr">
+			<span>uwaga: nie wystepuje plik, komunikacja obs³ugiwana przez j±dro</span></p>
+		<p>
+			<strong><strong>&nbsp;</strong></strong></p>
+		<p dir="ltr">
+			<span>int <strong>bind</strong>(int</span><span>sockfd</span><span>, const struct sockaddr *</span><span>addr</span><span>, &nbsp;socklen_t</span><span>addrlen</span><span>)</span></p>
+		<ul>
+			<li>
+				<span style="line-height: 1.231;">zwi±zuje adres specyfikowany przez addr do deskryptora sockfd; addrlen okre¶la rozmiar struktury addr</span></li>
+			<li>
+				<span style="line-height: 1.231;">sockaddr&nbsp;</span><span style="line-height: 1.231;">wystêpuje w r&oacute;¿nych &quot;smakach&quot; - nale¿y rzutowaæ na </span><span style="line-height: 1.231;">sockaddr (sockaddr_un - lokalne,&nbsp;sockaddr_in - internetowe)</span><span style="line-height: 1.231;">&nbsp;</span><strong style="line-height: 1.231;"><strong>&nbsp;</strong></strong></li>
+		</ul>
+		<p dir="ltr">
+			<span>struct sockaddr {<br class="kix-line-break" />
+			&nbsp;&nbsp;&nbsp;sa_family_t sa_family;<br class="kix-line-break" />
+			&nbsp;&nbsp;&nbsp;char &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sa_data[14];<br class="kix-line-break" />
+			}</span></p>
+		<p>
+			<strong><strong>&nbsp;</strong></strong></p>
+		<p dir="ltr">
+			<span>int </span><strong>connect</strong><span>(</span><span>int</span><span> sockfd, </span><span>const struct sockaddr</span><span> *addr,</span><span> socklen_t </span><span>addrlen)</span></p>
+		<ul>
+			<li>
+				<span style="line-height: 1.231;">³±czy socket okre¶lony przez sockfd do adresu addr(&ldquo;drugi koniec&rdquo;);</span></li>
+			<li>
+				<span style="line-height: 1.231;">mo¿na u¿ywaæ wielokrotnie i w ten spos&oacute;b zmieniaæ adresat&oacute;w</span></li>
+		</ul>
+		<p dir="ltr">
+			<span>int </span><strong>listen</strong><span>(</span><span>int</span><span> sockfd,</span><span> int</span><span> backlog);</span></p>
+		<ul>
+			<li>
+				<span style="line-height: 1.231;">zamienia socket w pasywny (tylko odbiera)</span></li>
+			<li>
+				<span style="line-height: 1.231;">backlog - maksymalna ilo¶æ po³±czeñ oczekuj±cych na sockfd</span></li>
+		</ul>
+		<p>
+			<strong><strong>&nbsp;</strong></strong></p>
+		<p dir="ltr">
+			<span>int </span><strong>accept</strong><span>(</span><span>int</span><span> sockfd,</span><span> struct sockaddr</span><span> *addr, </span><span>socklen_t </span><span>*addrlen)</span></p>
+		<ul>
+			<li>
+				<span style="line-height: 1.231;">dla </span><span style="line-height: 1.231;">SOCK_STREAM</span><span style="line-height: 1.231;">, </span><span style="line-height: 1.231;">SOCK_SEQPACKET</span></li>
+			<li>
+				<span style="line-height: 1.231;">pobiera pierwsze oczekuj±ce na sockfd po³±czenie i tworzy nowy po³±czony socket</span></li>
+			<li>
+				<span style="line-height: 1.231;">zwraca deskryptor nwoutworzonego socket&rsquo;a</span></li>
+			<li>
+				<span style="line-height: 1.231;">nowoutworzony nie nas³uchuje</span></li>
+			<li>
+				<span style="line-height: 1.231;">oryginalny sockfd nie jest modyfikowany</span></li>
+			<li>
+				<span style="line-height: 1.231;">addr wype³niany jest adresem kilenta, addrlen jest ustawiana na rozmiar addr</span></li>
+		</ul>
+		<p dir="ltr">
+			<span>mo¿na nas³uchiwaæ SIGIO wysy³ane przy przychodz±cym po³±czeniu - wymaga ustawienia flagi O_FASYNC</span></p>
+		<p>
+			<br />
+			&nbsp;</p>
+		<p>
+			<span style="font-size: medium;"><strong><strong>Przyk³ady:</strong></strong></span></p>
+		<table border="3" rules="all" style="background-color: #bec1c5; border: 3px solid #000000;">
+			<tbody>
+				<tr>
+					<td>
+						<strong>Klient</strong></td>
+					<td>
+						<strong>Serwer</strong></td>
+				</tr>
+				<tr>
+					<td>
+						<p>
+							#include&lt;stdio.h&gt;<br />
+							#include&lt;stdlib.h&gt;<br />
+							#include&lt;string.h&gt;<br />
+							#include&lt;sys/socket.h&gt;<br />
+							#include&lt;sys/un.h&gt;<br />
+							#include&lt;signal.h&gt;<br />
+							#include&lt;unistd.h&gt;</p>
+						<p>
+							<br />
+							int socket_fd;<br />
+							const char* const socket_name = &quot;/tmp/socket&quot;;</p>
+						<p>
+							<br />
+							void adieu(int i){<br />
+							&nbsp; &nbsp; &nbsp;<span style="color: #888888;">/** Close the socket */</span><br />
+							<span>&nbsp; &nbsp; &nbsp;</span>close (socket_fd);<br />
+							<span>&nbsp; &nbsp; &nbsp;</span>unlink (socket_name);<br />
+							<span>&nbsp; &nbsp; &nbsp;</span>exit(0);<br />
+							}</p>
+						<p>
+							int main (int argc, char* const argv[]){<br />
+							<span>&nbsp; &nbsp; &nbsp;</span>struct sockaddr_un name;<br />
+							<span>&nbsp; &nbsp; <span style="color: #888888;">&nbsp;</span></span><span style="color: #888888;">/** Create the socket. */</span><br />
+							<span>&nbsp; &nbsp; &nbsp;</span>socket_fd = socket (PF_LOCAL, SOCK_STREAM, 0);<br />
+							<span>&nbsp; &nbsp; <span style="color: #888888;">&nbsp;</span></span><span style="color: #888888;">/** Store the server&rsquo;s name in the socket address. */</span><br />
+							<span>&nbsp; &nbsp; &nbsp;</span>name.sun_family = AF_LOCAL;<br />
+							<span>&nbsp; &nbsp; &nbsp;</span>strcpy (name.sun_path, socket_name);<br />
+							<span>&nbsp; &nbsp; &nbsp;</span><span style="color: #888888;">/** Connect the socket. */</span><br />
+							<span>&nbsp; &nbsp; &nbsp;</span>connect (socket_fd, (struct sockaddr*)&amp;name, <span>&nbsp; &nbsp; &nbsp;</span>SUN_LEN (&amp;name));<br />
+							<span>&nbsp; &nbsp; &nbsp;</span>char buff[128];<br />
+							<span>&nbsp; <span style="color: #888888;">&nbsp; &nbsp;</span></span><span style="color: #888888;">/** Write the text on the command line to the socket.*/</span><br />
+							<span>&nbsp; &nbsp; &nbsp;</span>signal(SIGINT,adieu);<br />
+							<span>&nbsp; &nbsp; &nbsp;</span>while(1){<br />
+							<span>&nbsp; &nbsp; &nbsp;</span><span>&nbsp; &nbsp; &nbsp;</span>printf(&quot;what this time? :\n&quot;);<br />
+							<span>&nbsp; &nbsp; &nbsp;</span><span>&nbsp; &nbsp; &nbsp;</span>scanf(&quot;%s&quot;, buff);<br />
+							<span>&nbsp; &nbsp; &nbsp;</span><span>&nbsp; &nbsp; &nbsp;</span>write (socket_fd, (struct sockaddr*)&amp;buff, sizeof(buff));<br />
+							<span>&nbsp; &nbsp; &nbsp;</span>}</p>
+						<p>
+							<span>&nbsp; &nbsp; &nbsp;</span>return 0;<br />
+							}</p>
+						<p>
+							&nbsp;</p>
+						<p>
+							&nbsp;</p>
+						<p>
+							&nbsp;</p>
+						<p>
+							&nbsp;</p>
+					</td>
+					<td>
+						<p>
+							#include&lt;stdio.h&gt;<br />
+							#include&lt;stdlib.h&gt;<br />
+							#include&lt;string.h&gt;<br />
+							#include&lt;sys/socket.h&gt;<br />
+							#include&lt;sys/un.h&gt;<br />
+							#include&lt;unistd.h&gt;<br />
+							#include &lt;signal.h&gt;<br />
+							#include&lt;errno.h&gt;</p>
+						<p>
+							<br />
+							int socket_fd;<br />
+							const char* const socket_name =&quot;/tmp/socket&quot;;<br />
+							int client_socket_fd;</p>
+						<p>
+							void adieu(int i){<br />
+							<span>&nbsp; &nbsp; <span style="color: #888888;">&nbsp;</span></span><span style="color: #888888;">/** Close our end of the connection. */</span><br />
+							<span><span style="color: #888888;">&nbsp; &nbsp;</span> &nbsp;</span>close (client_socket_fd);<br />
+							<span>&nbsp; &nbsp;<span style="color: #888888;"> &nbsp;</span></span><span style="color: #888888;">/** Remove the socket file.*/</span><br />
+							<span><span style="color: #888888;">&nbsp; &nbsp;</span> &nbsp;</span>close (socket_fd);<br />
+							<span>&nbsp; &nbsp; &nbsp;</span>unlink (socket_name);<br />
+							<span>&nbsp; &nbsp; &nbsp;</span>exit(0);<br />
+							}</p>
+						<p>
+							int main (int argc, char* const argv[]){<br />
+							<span>&nbsp; &nbsp; &nbsp;</span>int ret;<br />
+							<span>&nbsp; &nbsp; &nbsp;</span>struct sockaddr_un name;<br />
+							<span>&nbsp; &nbsp; <span style="color: #888888;">&nbsp;</span></span><span style="color: #888888;">/** Create the socket. */</span><br />
+							<span style="color: #888888;"> &nbsp; &nbsp; &nbsp;</span>socket_fd = socket (PF_LOCAL, SOCK_STREAM, 0);<br />
+							<span>&nbsp; &nbsp;<span style="color: #888888;"> &nbsp;</span></span><span style="color: #888888;">/** Indicate that this is a server. */</span><br />
+							<span><span style="color: #888888;">&nbsp; &nbsp;</span> &nbsp;</span>name.sun_family = AF_LOCAL;<br />
+							<span>&nbsp; &nbsp; &nbsp;</span>strcpy (name.sun_path, socket_name);<br />
+							<span>&nbsp; &nbsp; &nbsp;</span>bind (socket_fd, (struct sockaddr*)&amp;name, SUN_LEN (&amp;name));<br />
+							<span>&nbsp; &nbsp; <span style="color: #888888;">&nbsp;</span></span><span style="color: #888888;">/** Listen for connections. */</span><br />
+							<span><span style="color: #888888;">&nbsp; &nbsp;</span> &nbsp;</span>listen (socket_fd, 5);<br />
+							<span>&nbsp; &nbsp; &nbsp;</span>struct sockaddr_un client_name;<br />
+							<span>&nbsp; &nbsp; &nbsp;</span>socklen_t client_name_len;<br />
+							<span>&nbsp; &nbsp; <span style="color: #888888;">&nbsp;</span></span><span style="color: #888888;">/** Accept a connection. */</span><br />
+							<span><span style="color: #888888;">&nbsp; &nbsp;</span> &nbsp;</span>client_socket_fd = accept (socket_fd, (struct sockaddr*)&amp;client_name, &amp;client_name_len);<br />
+							<span>&nbsp; &nbsp; &nbsp;</span>char buff[128];<br />
+							<span>&nbsp; &nbsp; &nbsp;</span>signal(SIGINT,adieu);<br />
+							<span>&nbsp; &nbsp; &nbsp;</span>while(1){<br />
+							<span>&nbsp; &nbsp; &nbsp;</span><span>&nbsp; &nbsp; &nbsp;</span>ret = read (client_socket_fd, buff, sizeof(buff));<br />
+							<span>&nbsp; &nbsp; &nbsp;</span><span>&nbsp; &nbsp; &nbsp;</span>if(ret==0)break;<br />
+							<span>&nbsp; &nbsp; &nbsp;</span><span>&nbsp; &nbsp; &nbsp;</span>printf(&quot;folk says : %s\n&quot;, buff);<br />
+							<span>&nbsp; &nbsp; &nbsp;</span>}<br />
+							<span>&nbsp; &nbsp; &nbsp;</span>adieu(0);<br />
+							<span>&nbsp; &nbsp; &nbsp;</span>return 0;<br />
+							}</p>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p>
+							<a href="http://upel.agh.edu.pl/wiet/draftfile.php/1862/user/draft/221799608/client.c">client.c</a></p>
+					</td>
+					<td>
+						<p>
+							<a href="http://upel.agh.edu.pl/wiet/draftfile.php/1862/user/draft/221799608/server.c">server.c</a></p>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<p>
+			&nbsp;</p>
+		<p>
+			&nbsp;</p>
+		<p>
+			<a href="http://upel.agh.edu.pl/wiet/draftfile.php/1862/user/draft/221799608/pytaniaReadable.txt">(pytania)</a></p>
+		<p>
+			&nbsp;</p>
+		<p dir="ltr">
+			<span style="font-size: medium;"><strong>BIBLIOGRAFIA</strong></span></p>
+		<ul>
+			<li dir="ltr">
+				<p dir="ltr">
+					<span>M. Mitchell, J. Oldham, A. Samuel: &quot;Advanced Linux Programming&quot;, rozdzia³ 5.5: &quot;Sockets&quot;</span></p>
+			</li>
+			<li dir="ltr">
+				<p dir="ltr">
+					<span>http://linux.die.net/man</span></p>
+			</li>
+		</ul>
+	</body>
+</html>
+

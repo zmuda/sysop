@@ -111,7 +111,7 @@ void WRITE(int freshly_created){
                 int i=0,k=how_many;
                 while(how_many--){
                     i+=rand()%(MAXTAB-i-how_many);
-                    tab[i]=rand()%10000;
+                    tab[i]=rand()%15;
                 }
 				//zmodyfikowano
 				printf("(%d) %d values had been modified\n", write_number++, k);
