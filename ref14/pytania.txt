@@ -13,10 +13,10 @@ Sockety::Przestrzeń nazw:?{
 }
 
 Sockety::Które nazwy funkcji są poprawne:?{
-~%-100%send
+~%34%send
 ~%-100%tie
-~%50%bind
-~%50%accept
+~%33%bind
+~%33%accept
 }
 
 Sockety::Protokoły wykorzystywane w socketach:?{
